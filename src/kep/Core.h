@@ -195,5 +195,5 @@ namespace kep
             _v0.x*_v1.y - _v0.y*_v1.x
         );
     }
-}
+};
 #endif // CORE_KEP_H_

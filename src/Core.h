@@ -40,7 +40,9 @@ namespace kelp
     {
     public:
  //       MeshLoad * m_cityMesh;
+        MeshLoad * m_plane;
         MeshLoad * m_sphereMesh;
+        MeshLoad * m_cubeMesh;
         ShaderMin * m_shaderMinimal;
         ShaderDefault * m_shaderDefault;
         

@@ -20,8 +20,9 @@ Core::Core()
     
     
     
- //   m_cityMesh = new MeshLoad("./models/city.obj", "./models/");
+    m_plane = new MeshLoad("./models/plane.obj", "./models/");
     m_sphereMesh = new MeshLoad("./models/sphereUV.obj", "./models/");
+    m_cubeMesh = new MeshLoad("./models/cube.obj", "./models/");
     m_shaderMinimal = new ShaderMin();
     m_shaderDefault = new ShaderDefault();
     
@@ -29,8 +30,10 @@ Core::Core()
 }
 Core::~Core()
 {
-   // delete m_cityMesh;
+    delete m_plane;
     delete m_sphereMesh;
+    delete m_cubeMesh;
+    
     delete m_shaderMinimal;
     delete m_shaderDefault;
     delete m_world;

@@ -10,6 +10,7 @@
 #include "component/Camera.h"
 #include "component/Light.h"
 #include "component/RenderLine.h"
+#include "shadiray/Shadiray.h"
 
 namespace kelp
 {
@@ -17,6 +18,8 @@ namespace kelp
     {
     public:
         Entity * empty[10];
+        shad::Ray ray;
+        shad::Plane plane;
         
         World_0(Core * _core);
         ~World_0();

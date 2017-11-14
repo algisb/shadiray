@@ -34,6 +34,6 @@ include_directories ("./external/tinyobjloader")
 
 #kelp engine-----------------------------------------------
 include_directories ("./src")
-file(GLOB KELP_SRC "./src/*.cpp" "./src/component/*.cpp" "./src/kep/*.cpp" "./src/world/*.cpp")
+file(GLOB KELP_SRC "./src/*.cpp" "./src/component/*.cpp" "./src/kep/*.cpp" "./src/world/*.cpp" "./src/shadiray/*cpp")
 add_executable(shadiray-demo ${KELP_SRC})
 target_link_libraries (shadiray-demo ${OPENGL_LIBRARIES} glfw glew_s )

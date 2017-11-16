@@ -9,8 +9,11 @@
 #include <stdint.h>
 #include <float.h>
 
+#include "Component.h"
 #include "Plane.h"
 #include "Ray.h"
+#include "component/RenderLine.h"
+#include "component/Transform.h"
 
 namespace shad
 {
@@ -37,18 +40,32 @@ namespace shad
         o_timeElapsed0 = tti0/NUM_SAMPLES;\
 }
 
-class Contact//intersect
-{
-public:
-    bool e;//exists
-    kep::Vector3 p;//position
+    class Contact//intersect
+    {
+    public:
+        bool e;//exists
+        kep::Vector3 p;//position
+        
+        Contact(bool _exists = false, kep::Vector3 _position = kep::Vector3(0.0f, 0.0f, 0.0f));
+        ~Contact();
+        Contact rayPlane(Ray _ray, Plane _plane);
+    };
     
-    Contact(bool _exists = false, kep::Vector3 _position = kep::Vector3(0.0f, 0.0f, 0.0f));
-    ~Contact();
-    static Contact rayPlane(Ray _ray, Plane _plane);
-};
+    class RayCaster : public kelp::Component
+    {
+    public:
+        Ray ray;
+        kelp::RenderLine * rline;
+        RayCaster();
+        ~RayCaster();
+        
+        void init();
+        void update();
+        void render();
+        
+    };
 
-;}
+};
 
 
 #endif // SHADIRAY_H_

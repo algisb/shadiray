@@ -18,12 +18,16 @@ namespace kelp
         kep::Vector3 m_front;
         kep::Vector3 m_left;
         
-        Camera(kep::Vector3 _up, kep::Matrix4 _projectionMat);
+        bool m_possessed;
+        
+        Camera(kep::Vector3 _up, kep::Matrix4 _projectionMat, bool _possessed);
         ~Camera();
         
         void init();
         void update();
         void render();
+        
+        void possessedControls();
         
         void setAsRenderCamera();
     };

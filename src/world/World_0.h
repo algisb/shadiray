@@ -5,7 +5,6 @@
 #include "Shader.h"
 #include "Mesh.h"
 #include "component/Transform.h"
-#include "component/InputController.h"
 #include "component/Render.h"
 #include "component/Camera.h"
 #include "component/Light.h"
@@ -18,8 +17,6 @@ namespace kelp
     {
     public:
         Entity * empty[10];
-        shad::Ray ray;
-        shad::Plane plane;
         
         World_0(Core * _core);
         ~World_0();

@@ -26,9 +26,9 @@ World_0::World_0(Core * _core) : World(_core)
                                 Config::s_windowWidth, 
                                 Config::s_windowHeight, 
                                 1.0f, 
-                                1000.0f).transpose()
+                                1000.0f).transpose(),
+                                true
                             ));
-    refEntity->addComponent(new InputController());
     
     
     refEntity = new Entity(this, "Directional Light");
@@ -54,7 +54,8 @@ World_0::World_0(Core * _core) : World(_core)
                                           kep::Vector3(1.0f, 1.0f, 1.0f)
                                          ));
     
-    refEntity->addComponent(new RenderLine(kep::Vector3(0,0,0), kep::Vector3(0,0,10)));
+    refEntity->addComponent(new shad::RayCaster());
+    //refEntity->addComponent(new RenderLine(kep::Vector3(0,0,0), kep::Vector3(0,0,10)));
     
     
     refEntity = new Entity(this, "sphere");

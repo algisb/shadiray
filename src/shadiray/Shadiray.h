@@ -55,7 +55,7 @@ namespace shad
         static Contact rayTriangle(Ray _ray, Triangle _triangle);
     };
     
-    class RayCaster : public kelp::Component // Equivelent to a camera in regular rendering
+    class RayCaster : public kelp::Component // Equivelent to a camera for regular rendering
     {
     public:
         kep::Vector3 m_up;  
@@ -77,7 +77,11 @@ namespace shad
     class RayReciever : public kelp::Component //any set of trinagles appearing in the ray cast scene
     {
     public:
+        kelp::RenderLine * rline[3];
+        
+        static std::vector<RayReciever*> s_rayRecievers;
         kelp::Mesh * m_mesh;
+        kelp::Transform * m_transform;
         int m_numTriangles;
         Triangle * m_triangles;
         Triangle * m_tTriangles; // trasformed triangles

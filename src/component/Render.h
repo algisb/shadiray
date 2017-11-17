@@ -24,9 +24,6 @@ namespace kelp
         RenderMode m_renderMode;
         
         kep::Matrix4 m_modelMat;
-        kep::Matrix4 m_viewMat;
-        kep::Matrix4 m_projectionMat;
-        
 
         
         Render(Mesh* _mesh, Shader* _shader, RenderMode _renderMode);

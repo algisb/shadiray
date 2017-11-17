@@ -28,28 +28,20 @@ void Render::init()
 }
 void Render::update()
 {
-    m_transform->m_orientation.normalize();
-    m_modelMat.setOrientationAndPos(m_transform->m_orientation, m_transform->m_position);
-    m_modelMat = m_modelMat * kep::Matrix4(m_transform->m_scale.x, 0.0f, 0.0f, 0.0f,
-                                           0.0f, m_transform->m_scale.y, 0.0f, 0.0f,
-                                           0.0f, 0.0f, m_transform->m_scale.z, 0.0f,
-                                           0.0f, 0.0f, 0.0f, 1.0f);
-    m_modelMat = m_modelMat.transpose();
-    
-    Camera * rc = m_owner->m_world->m_renderCamera;
-    m_viewMat = rc->m_viewMat;
-    m_projectionMat = rc->m_projectionMat;
 }
 void Render::render()
 {
+    
     glUseProgram(m_shader->m_shaderLocation);
 
     glUniformMatrix4fv(m_shader->m_shaderModelMatLocation, 1, 
-                       GL_FALSE, &m_modelMat.d[0][0]);
+                       GL_FALSE, &(m_transform->m_modelMat.transpose().d[0][0]));
+    
+    Camera * rc = m_owner->m_world->m_renderCamera;
     glUniformMatrix4fv(m_shader->m_shaderViewMatLocation, 1, 
-                       GL_FALSE, &m_viewMat.d[0][0]);
+                       GL_FALSE, &rc->m_viewMat.d[0][0]);
     glUniformMatrix4fv(m_shader->m_shaderProjMatLocation, 1, 
-                       GL_FALSE, &m_projectionMat.d[0][0]);
+                       GL_FALSE, &rc->m_projectionMat.d[0][0]);
     glUniform3fv(m_shader->m_shaderColourLocation, 1, kep::Vector3(1.0f, 0.0f, 0.0f).data);
 
     switch(m_renderMode)

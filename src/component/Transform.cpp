@@ -20,7 +20,12 @@ void Transform::init()
 
 void Transform::update()
 {
-    
+    m_orientation.normalize();
+    m_modelMat.setOrientationAndPos(m_orientation, m_position);
+    m_modelMat = m_modelMat * kep::Matrix4(m_scale.x, 0.0f, 0.0f, 0.0f,
+                                           0.0f, m_scale.y, 0.0f, 0.0f,
+                                           0.0f, 0.0f, m_scale.z, 0.0f,
+                                           0.0f, 0.0f, 0.0f, 1.0f);
 }
 
 void Transform::dump()

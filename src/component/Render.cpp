@@ -50,6 +50,7 @@ void Render::render()
                        GL_FALSE, &m_viewMat.d[0][0]);
     glUniformMatrix4fv(m_shader->m_shaderProjMatLocation, 1, 
                        GL_FALSE, &m_projectionMat.d[0][0]);
+    glUniform3fv(m_shader->m_shaderColourLocation, 1, kep::Vector3(1.0f, 0.0f, 0.0f).data);
 
     switch(m_renderMode)
     {

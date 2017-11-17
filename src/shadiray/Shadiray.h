@@ -10,10 +10,13 @@
 #include <float.h>
 
 #include "Component.h"
+#include "Triangle.h"
 #include "Plane.h"
 #include "Ray.h"
 #include "component/RenderLine.h"
 #include "component/Transform.h"
+#include "component/Render.h"
+
 
 namespace shad
 {
@@ -48,12 +51,19 @@ namespace shad
         
         Contact(bool _exists = false, kep::Vector3 _position = kep::Vector3(0.0f, 0.0f, 0.0f));
         ~Contact();
-        Contact rayPlane(Ray _ray, Plane _plane);
+        static Contact rayPlane(Ray _ray, Plane _plane);
+        static Contact rayTriangle(Ray _ray, Triangle _triangle);
     };
     
-    class RayCaster : public kelp::Component
+    class RayCaster : public kelp::Component // Equivelent to a camera in regular rendering
     {
     public:
+        kep::Vector3 m_up;  
+        kep::Vector3 m_front;
+        kep::Vector3 m_left;
+        
+        kelp::Transform * m_transform;
+        float m_maxRayLength;
         Ray ray;
         kelp::RenderLine * rline;
         RayCaster();
@@ -63,6 +73,20 @@ namespace shad
         void update();
         void render();
         
+    };
+    class RayReciever : public kelp::Component //any set of trinagles appearing in the ray cast scene
+    {
+    public:
+        kelp::Mesh * m_mesh;
+        int m_numTriangles;
+        Triangle * m_triangles;
+        Triangle * m_tTriangles; // trasformed triangles
+        RayReciever();
+        ~RayReciever();
+        
+        void init();
+        void update();
+        void render();
     };
 
 };

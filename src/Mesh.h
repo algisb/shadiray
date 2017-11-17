@@ -21,6 +21,8 @@ namespace kelp
         GLuint m_vboT;//Texture data
         
         unsigned int m_numVertices;
+        float * m_dataV;
+        float * m_dataN;
         
         Mesh();
         virtual ~Mesh()=0;

@@ -84,7 +84,7 @@ World_0::World_0(Core * _core) : World(_core)
                                          ));
     
     refEntity->addComponent(new Render(m_core->m_plane, m_core->m_shaderDefault, RenderMode::SOLID));
-    
+    refEntity->addComponent(new shad::RayReciever());
 }
 World_0::~World_0()
 {

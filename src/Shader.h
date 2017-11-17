@@ -18,6 +18,7 @@ namespace kelp
         int m_shaderModelMatLocation;
         int m_shaderViewMatLocation;
         int m_shaderProjMatLocation;
+        int m_shaderColourLocation;
 
         Shader(const char * _vertexShaderPath,const char * _fragmentShaderPath);
         virtual ~Shader()=0;
@@ -31,6 +32,7 @@ namespace kelp
     class ShaderMin : public Shader
      {
     public:
+        
         ShaderMin(const char* _vertexShaderPath = "./shaders/minimal_v.glsl", const char* _fragmentShaderPath = "./shaders/minimal_f.glsl");
         ~ShaderMin();
         

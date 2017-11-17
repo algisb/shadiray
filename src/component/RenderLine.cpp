@@ -42,6 +42,7 @@ void RenderLine::renderLines(Shader * _shader, Camera * _rc)
                        GL_FALSE, &_rc->m_viewMat.d[0][0]);
     glUniformMatrix4fv(_shader->m_shaderProjMatLocation, 1, 
                        GL_FALSE, &_rc->m_projectionMat.d[0][0]);
+    glUniform3fv(_shader->m_shaderColourLocation, 1, kep::Vector3(0.0f, 1.0f, 0.0f).data);
     
     // Tell OpenGL to draw it
     // Must specify the type of geometry to draw and the number of vertices

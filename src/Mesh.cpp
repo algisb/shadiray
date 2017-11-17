@@ -124,12 +124,12 @@ MeshLoad::MeshLoad(const char * _objPath, const char * _mtlDir)
     
     if(attrib.vertices.size() != 0)
     {
-        float * dataV = new float[m_numVertices*3];
+        m_dataV = new float[m_numVertices*3];
         size_t dataV_i = 0;
         UNPACK_OBJ(
                     for(size_t i = 0; i<3; i++)
                     {
-                        dataV[dataV_i] = attrib.vertices[3*idx.vertex_index+i];
+                        m_dataV[dataV_i] = attrib.vertices[3*idx.vertex_index+i];
                         dataV_i++;
                     }
                     );
@@ -140,27 +140,27 @@ MeshLoad::MeshLoad(const char * _objPath, const char * _mtlDir)
 
         glGenBuffers(1, &m_vboV);
         glBindBuffer(GL_ARRAY_BUFFER, m_vboV);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m_numVertices * 3, dataV, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m_numVertices * 3, m_dataV, GL_STATIC_DRAW);
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
         glEnableVertexAttribArray(0);
         
 
         //delete data from heap
-        delete[] dataV;
+        //delete[] dataV;
 
 
     }
     
     if(attrib.normals.size() != 0)
     {
-        float * dataN = new float[m_numVertices*3];
+        m_dataN = new float[m_numVertices*3];
         size_t dataN_i = 0;
         
         UNPACK_OBJ(
                     for(size_t i = 0; i<3; i++)
                     {
                         
-                        dataN[dataN_i] = attrib.normals[3*idx.normal_index+i];
+                        m_dataN[dataN_i] = attrib.normals[3*idx.normal_index+i];
                         dataN_i++;
                     }
                     //printf("%f %f %f \n", attrib.normals[3*idx.normal_index+0], attrib.normals[3*idx.normal_index+1], attrib.normals[3*idx.normal_index+2]);
@@ -168,13 +168,13 @@ MeshLoad::MeshLoad(const char * _objPath, const char * _mtlDir)
         
         glGenBuffers(1, &m_vboN);
         glBindBuffer(GL_ARRAY_BUFFER, m_vboN);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m_numVertices * 3, dataN, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m_numVertices * 3, m_dataN, GL_STATIC_DRAW);
 
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
         glEnableVertexAttribArray(1);
         
         //delete data from heap
-        delete[] dataN;
+        //delete[] dataN;
         
     }
     
@@ -214,5 +214,7 @@ MeshLoad::MeshLoad(const char * _objPath, const char * _mtlDir)
 MeshLoad::~MeshLoad()
 {
     clear();
+    delete[] m_dataV;
+    delete[] m_dataN;
 }
 

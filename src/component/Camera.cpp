@@ -65,7 +65,7 @@ void Camera::possessedControls()
         q.setEuler(m_up, -1.0f);
         m_transform->m_orientation *= q;
     }
-    
+    //printf("%f %f %f %f\n", m_transform->m_orientation.i, m_transform->m_orientation.j, m_transform->m_orientation.k, m_transform->m_orientation.r);
     if(Input::Keyboard::is(Input::Keyboard::KeyboardKey::KEY_RIGHT, Input::Keyboard::KeyboardAction::HELD))
     {
         //rc->m_transform->m_orientation.addScaledVector(kep::Vector3(0.0f, 1.0f, 0.0f), 0.01f);

@@ -380,7 +380,7 @@ void Matrix3::setOrientation(const Quaternion &_q)
 
 void Matrix3::dump()
 {
-    printf("%f %f %f \n%f %f %f \n%f %f %f",
+    printf("%f %f %f \n%f %f %f \n%f %f %f \n",
            data[0], data[1], data[2],
            data[3], data[4], data[5],
            data[6], data[7], data[8]
@@ -684,7 +684,7 @@ Vector3 Matrix4::transformDirection(const Vector3 &_vector) const
 
 void Matrix4::dump()
 {
-        printf("%.2f %.2f %.2f %.2f \n%.2f %.2f %.2f %.2f \n%.2f %.2f %.2f %.2f \n%.2f %.2f %.2f %.2f",
+        printf("%.2f %.2f %.2f %.2f \n%.2f %.2f %.2f %.2f \n%.2f %.2f %.2f %.2f \n%.2f %.2f %.2f %.2f\n",
            data[0], data[1], data[2],  data[3], 
            data[4], data[5], data[6],  data[7],
            data[8], data[9], data[10], data[11],

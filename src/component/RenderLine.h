@@ -15,6 +15,7 @@ namespace kelp
     public:
         kep::Vector3 m_p0;
         kep::Vector3 m_p1;
+        kep::Vector3 m_colour;
         static std::vector<kep::Vector3> m_verticies;
         
         RenderLine(kep::Vector3 _p0, kep::Vector3 _p1);

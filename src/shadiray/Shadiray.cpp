@@ -28,7 +28,34 @@ Contact Contact::rayPlane(Ray _ray, Plane _plane)
 }
 Contact Contact::rayTriangle(shad::Ray _ray, shad::Triangle _triangle)
 {
-    return Contact();
+    Plane plane(_triangle.p[0], _triangle.n);
+    Contact contact = rayPlane(_ray, plane);
+    if(!contact.e)//no intersection exit
+        return Contact();
+    
+    //edge 0
+    kep::Vector3 ab = _triangle.p[1] - _triangle.p[0];
+    kep::Vector3 aq = contact.p - _triangle.p[0];
+    kep::Vector3 c = kep::cross(ab,aq);
+    float d = kep::dot(c, _triangle.n);
+    if(d < 0)
+        return Contact();
+    //edge 1
+    ab = _triangle.p[2] - _triangle.p[1];
+    aq = contact.p - _triangle.p[1];
+    c = kep::cross(ab,aq);
+    d = kep::dot(c, _triangle.n);
+    if(d < 0)
+        return Contact();
+    //edge 2
+    ab = _triangle.p[0] - _triangle.p[2];
+    aq = contact.p - _triangle.p[2];
+    c = kep::cross(ab,aq);
+    d = kep::dot(c, _triangle.n);
+    if(d < 0)
+        return Contact();    
+    
+    return contact;
 }
 
 
@@ -59,7 +86,8 @@ void RayCaster::update()
     kep::Matrix3 tmpMat3 = kep::Matrix3(tmpMat4);
     Ray tempRay = Ray(ray.s, tmpMat3 * ray.d);
     //Contact c = Contact::rayPlane(tempRay, Plane(kep::Vector3(5.0f, 0.0f, 0.0f), kep::Vector3(-1.0f, 0.0f, 0.0f)));
-    Contact c = Contact::rayPlane(tempRay, Plane(RayReciever::s_rayRecievers[0]->m_tTriangles->p[0], RayReciever::s_rayRecievers[0]->m_tTriangles->n));
+    //Contact c = Contact::rayPlane(tempRay, Plane(RayReciever::s_rayRecievers[0]->m_tTriangles->p[0], RayReciever::s_rayRecievers[0]->m_tTriangles->n));
+    Contact c = Contact::rayTriangle(tempRay, RayReciever::s_rayRecievers[0]->m_tTriangles[0]);
     if(c.e)
     {
         //printf("collision\n");
@@ -186,14 +214,14 @@ void RayReciever::update()
                                    kep::Matrix3(m_transform->m_modelMat) * m_triangles[i].n);
     }
     
-//     rline[0]->m_p0 = m_tTriangles[0].p[0];
-//     rline[0]->m_p1 = m_tTriangles[0].p[1];
-// 
-//     rline[1]->m_p0 = m_tTriangles[0].p[0];
-//     rline[1]->m_p1 = m_tTriangles[0].p[2];
-// 
-//     rline[2]->m_p0 = m_tTriangles[0].p[1];
-//     rline[2]->m_p1 = m_tTriangles[0].p[2];  
+    rline[0]->m_p0 = m_tTriangles[0].p[0];
+    rline[0]->m_p1 = m_tTriangles[0].p[1];
+
+    rline[1]->m_p0 = m_tTriangles[0].p[0];
+    rline[1]->m_p1 = m_tTriangles[0].p[2];
+
+    rline[2]->m_p0 = m_tTriangles[0].p[1];
+    rline[2]->m_p1 = m_tTriangles[0].p[2];  
 }
 
 void RayReciever::render()

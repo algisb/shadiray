@@ -17,15 +17,31 @@ namespace shad
         kep::Vector3 m_left;
         
         kelp::Transform * m_transform;
-        float m_maxRayLength;
-        Ray ray;
-        kelp::RenderLine * rline;
-        RayCaster();
+        float m_nearPlane;
+        float m_farPlane;
+        
+        int m_width;
+        int m_height;
+        float m_raySpread;
+        
+        Ray ** m_rays;
+        kelp::RenderLine ** m_rLines;
+        
+        Ray m_viewCone[4];//rays descrbing the viewcone
+        kelp::RenderLine * m_vcLines[12];//used for drawing viewcone
+        
+        RayCaster(int _width, int _height, float _nearPlane, float _farPlane, float _raySpread);
         ~RayCaster();
         
         void init();
         void update();
         void render();
+        
+        void initRays();
+        void updateRays();
+        
+        void initViewCone();
+        void updateViewCone();
         
     };  
 };

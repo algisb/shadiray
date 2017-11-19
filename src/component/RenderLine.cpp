@@ -8,6 +8,7 @@ RenderLine::RenderLine(kep::Vector3 _p0, kep::Vector3 _p1)
 {
     m_p0 = _p0;
     m_p1 = _p1;
+    m_enabled = true;
 }
 RenderLine::~RenderLine()
 {
@@ -61,8 +62,11 @@ void RenderLine::init()
 }
 void RenderLine::update()
 {
-    m_verticies.push_back(m_p0);
-    m_verticies.push_back(m_p1);
+    if(m_enabled)
+    {
+        m_verticies.push_back(m_p0);
+        m_verticies.push_back(m_p1);
+    }
 }
 void RenderLine::render()
 {

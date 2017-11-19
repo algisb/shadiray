@@ -47,14 +47,14 @@ World_0::World_0(Core * _core) : World(_core)
     /////////////////////////////////////////////////////////////////////////////////////////////
     
     
-    refEntity = new Entity(this, "ray");
+    refEntity = new Entity(this, "ray caster");
     refEntity->addComponent(new Transform(
                                           kep::Vector3(0.0f, 0.0f, 0.0f),
                                           kep::Quaternion(), 
                                           kep::Vector3(1.0f, 1.0f, 1.0f)
                                          ));
     
-    refEntity->addComponent(new shad::RayCaster());
+    refEntity->addComponent(new shad::RayCaster(256, 256, 2.0f, 50.0f, 0.01f));
     //refEntity->addComponent(new RenderLine(kep::Vector3(0,0,0), kep::Vector3(0,0,10)));
     
     

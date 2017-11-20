@@ -9,8 +9,9 @@
 #include "component/Camera.h"
 #include "component/Light.h"
 #include "component/RenderLine.h"
-#include "shadiray/Shadiray.h"
-
+//#include "shadiray/Shadiray.h"
+#include "shadiray/RayCaster.h"
+#include "shadiray/RayReciever.h"
 
 namespace kelp
 {

@@ -65,7 +65,7 @@ World_0::World_0(Core * _core) : World(_core)
                                           kep::Quaternion(), 
                                           kep::Vector3(1.0f, 1.0f, 1.0f)
                                          ));
-    refEntity->addComponent(new shad::RayReciever());
+    //refEntity->addComponent(new shad::RayReciever());
     refEntity->addComponent(new Render(m_core->m_highPolyMesh, m_core->m_shaderDefault, RenderMode::SOLID));
     
     refEntity = new Entity(this, "sphere");
@@ -74,7 +74,7 @@ World_0::World_0(Core * _core) : World(_core)
                                           kep::Quaternion(), 
                                           kep::Vector3(1.0f, 1.0f, 1.0f)
                                          ));
-    //refEntity->addComponent(new shad::RayReciever());
+    refEntity->addComponent(new shad::RayReciever());
     refEntity->addComponent(new Render(m_core->m_sphereMesh, m_core->m_shaderDefault, RenderMode::SOLID));
     
     refEntity = new Entity(this, "plane");

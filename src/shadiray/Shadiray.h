@@ -10,8 +10,8 @@
 #include <float.h>
 
 
-#include "shadiray/RayCaster.h"
-#include "shadiray/RayReciever.h"
+//#include "shadiray/RayCaster.h"
+//#include "shadiray/RayReciever.h"
 
 namespace shad
 {

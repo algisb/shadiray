@@ -51,40 +51,41 @@ World_0::World_0(Core * _core) : World(_core)
     refEntity->addComponent(new Transform(
                                           kep::Vector3(0.0f, 0.0f, 0.0f),
                                           kep::Quaternion(), 
-                                          kep::Vector3(1.0f, 1.0f, 1.0f)
+                                          kep::Vector3(0.1f, 0.1f, 0.1f)
                                          ));
     
     refEntity->addComponent(new shad::RayCaster(256, 256, 2.0f, 50.0f, 0.01f));
+    refEntity->addComponent(new Render(m_core->m_sphereMesh, m_core->m_shaderMinimal, RenderMode::SOLID, kep::Vector3(0.0f, 0.0f, 1.0f)));
     //refEntity->addComponent(new RenderLine(kep::Vector3(0,0,0), kep::Vector3(0,0,10)));
     
     
-    refEntity = new Entity(this, "sphere");
+    refEntity = new Entity(this, "high poly");
     refEntity->addComponent(new Transform(
                                           kep::Vector3(-5.0f, 0.0f, 0.0f),
                                           kep::Quaternion(), 
                                           kep::Vector3(1.0f, 1.0f, 1.0f)
                                          ));
-    
-    refEntity->addComponent(new Render(m_core->m_sphereMesh, m_core->m_shaderDefault, RenderMode::SOLID));
+    refEntity->addComponent(new shad::RayReciever());
+    refEntity->addComponent(new Render(m_core->m_highPolyMesh, m_core->m_shaderDefault, RenderMode::SOLID));
     
     refEntity = new Entity(this, "sphere");
     refEntity->addComponent(new Transform(
-                                          kep::Vector3(-5.0f, 0.0f, 3.0f),
+                                          kep::Vector3(-5.0f, 0.0f, 10.0f),
                                           kep::Quaternion(), 
                                           kep::Vector3(1.0f, 1.0f, 1.0f)
                                          ));
-    
+    //refEntity->addComponent(new shad::RayReciever());
     refEntity->addComponent(new Render(m_core->m_sphereMesh, m_core->m_shaderDefault, RenderMode::SOLID));
     
     refEntity = new Entity(this, "plane");
     refEntity->addComponent(new Transform(
-                                          kep::Vector3(0.0f, -2.0f, 0.0f),
+                                          kep::Vector3(20.0f, 0.0f, 0.0f),
                                           kep::Quaternion(kep::Vector3(0,0,1), -25.0f), 
                                           kep::Vector3(10.0f, 1.0f, 10.0f)
                                          ));
-    
+    //refEntity->addComponent(new shad::RayReciever());
     refEntity->addComponent(new Render(m_core->m_plane, m_core->m_shaderDefault, RenderMode::SOLID));
-    refEntity->addComponent(new shad::RayReciever());
+    
 }
 World_0::~World_0()
 {

@@ -15,27 +15,27 @@
 
 namespace shad
 {
-#define BENCHMARK(o_timeElapsed, _expr) \
+#define EXEC_TIMER(o_timeElapsed, _expr) \
 {\
     std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();\
             _expr;\
     std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();\
-    std::chrono::microseconds time_span = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1);\
+    std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);\
     o_timeElapsed = time_span.count();\
 }
 
 
-#define NUM_SAMPLES 1000000
-#define BENCHMARK_SAMPLE(o_timeElapsed0, _expr0) \
+#define NUM_SAMPLES 10000
+#define EXEC_TIMER_SAMPLE(o_timeElapsed0, _expr0) \
 {\
-        uint64_t tti0 = 0; \
+        double tti0 = 0.0f; \
         for(int i = 0 ;i < NUM_SAMPLES;i++)\
         {\
-            uint64_t ti0 = 0;\
-            BENCHMARK(ti0, _expr0);\
+            double ti0 = 0.0f;\
+            EXEC_TIMER(ti0, _expr0);\
             tti0 = tti0 + ti0;\
         }\
-        o_timeElapsed0 = tti0/NUM_SAMPLES;\
+        o_timeElapsed0 = tti0/(double)NUM_SAMPLES;\
 }
 
 

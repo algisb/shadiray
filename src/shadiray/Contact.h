@@ -15,6 +15,7 @@ namespace shad
         ~Contact();
         static Contact rayPlane(Ray _ray, Plane _plane);
         static Contact rayTriangle(Ray _ray, Triangle _triangle);
+        static Contact rayTriangleBarycentric(Ray _ray, Triangle _triangle);
     };
 };
 

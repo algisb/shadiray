@@ -23,6 +23,8 @@ Core::Core()
     m_plane = new MeshLoad("./models/plane.obj", "./models/");
     m_sphereMesh = new MeshLoad("./models/sphereUV.obj", "./models/");
     m_cubeMesh = new MeshLoad("./models/cube.obj", "./models/");
+    m_highPolyMesh = new MeshLoad("./models/peps.obj", "./models/");
+    
     m_shaderMinimal = new ShaderMin();
     m_shaderDefault = new ShaderDefault();
     

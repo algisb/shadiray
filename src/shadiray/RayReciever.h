@@ -27,6 +27,7 @@ namespace shad
         void init();
         void update();
         void render();
+        void updateR();
     };  
 };
 

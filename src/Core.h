@@ -43,6 +43,8 @@ namespace kelp
         MeshLoad * m_plane;
         MeshLoad * m_sphereMesh;
         MeshLoad * m_cubeMesh;
+        MeshLoad * m_highPolyMesh;
+        
         ShaderMin * m_shaderMinimal;
         ShaderDefault * m_shaderDefault;
         

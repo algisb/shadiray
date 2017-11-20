@@ -48,13 +48,7 @@ void RayReciever::init()
 
 void RayReciever::update()
 {
-    for(int i = 0 ; i < m_numTriangles; i++)
-    {
-        m_tTriangles[i] = Triangle(m_transform->m_modelMat * m_triangles[i].p[0],
-                                   m_transform->m_modelMat * m_triangles[i].p[1],
-                                   m_transform->m_modelMat * m_triangles[i].p[2],
-                                   kep::Matrix3(m_transform->m_modelMat) * m_triangles[i].n);
-    }
+
     
 /*    rline[0]->m_p0 = m_tTriangles[0].p[0];
     rline[0]->m_p1 = m_tTriangles[0].p[1];
@@ -68,4 +62,15 @@ void RayReciever::update()
 
 void RayReciever::render()
 {
+}
+
+void RayReciever::updateR()
+{
+    for(int i = 0 ; i < m_numTriangles; i++)
+    {
+        m_tTriangles[i] = Triangle(m_transform->m_modelMat * m_triangles[i].p[0],
+                                   m_transform->m_modelMat * m_triangles[i].p[1],
+                                   m_transform->m_modelMat * m_triangles[i].p[2],
+                                   kep::Matrix3(m_transform->m_modelMat) * m_triangles[i].n);
+    }
 }

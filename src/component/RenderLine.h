@@ -17,8 +17,8 @@ namespace kelp
         kep::Vector3 m_p1;
         kep::Vector3 m_colour;
         static std::vector<kep::Vector3> m_verticies;
-        
-        RenderLine(kep::Vector3 _p0, kep::Vector3 _p1);
+        static std::vector<kep::Vector3> m_colours; //1 colour for 2 verts
+        RenderLine(kep::Vector3 _p0, kep::Vector3 _p1, kep::Vector3 _colour = kep::Vector3(0.0f, 1.0f, 0.0f));
         ~RenderLine();
         static void renderLines(Shader * _shader, Camera * _rc);
         

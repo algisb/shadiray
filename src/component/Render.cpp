@@ -8,11 +8,12 @@
 
 using namespace kelp;
 
-Render::Render(Mesh * _mesh, Shader * _shader, RenderMode _renderMode) : Component()
+Render::Render(Mesh * _mesh, Shader * _shader, RenderMode _renderMode, kep::Vector3 _colour) : Component()
 {
     m_mesh = _mesh;
     m_shader = _shader;
     m_renderMode = _renderMode;
+    m_colour = _colour;
 
 }
 Render::~Render()
@@ -42,7 +43,7 @@ void Render::render()
                        GL_FALSE, &rc->m_viewMat.d[0][0]);
     glUniformMatrix4fv(m_shader->m_shaderProjMatLocation, 1, 
                        GL_FALSE, &rc->m_projectionMat.d[0][0]);
-    glUniform3fv(m_shader->m_shaderColourLocation, 1, kep::Vector3(1.0f, 0.0f, 0.0f).data);
+    glUniform3fv(m_shader->m_shaderColourLocation, 1, m_colour.data);
 
     switch(m_renderMode)
     {

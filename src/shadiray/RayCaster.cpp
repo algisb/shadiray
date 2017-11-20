@@ -1,6 +1,7 @@
 #include "RayCaster.h"
 #include "RayReciever.h"
 #include <Time.h>
+#include "Shadiray.h"
 
 using namespace shad;
 RayCaster::RayCaster(int _width, int _height, float _nearPlane, float _farPlane, float _raySpread)
@@ -74,7 +75,31 @@ void RayCaster::update()
         m_transform->m_orientation *= q;
     }
     if(kelp::Input::Keyboard::is(kelp::Input::Keyboard::KeyboardKey::KEY_SPACE, kelp::Input::Keyboard::KeyboardAction::PRESSED))
+    {
+        printf("num rays:   %d \n", m_width*m_height);
+        int numTri = 0;
+        for(int i = 0; i<RayReciever::s_rayRecievers.size();i++)
+            numTri += RayReciever::s_rayRecievers[i]->m_numTriangles;
+        printf("num triangles:  %d \n", numTri);
+        
+        
+        Ray ray(kep::Vector3(), kep::Vector3(0.0f, 0.0f, -1.0f).normalized());
+        Triangle tri(kep::Vector3(-1.0f,-1.0f,-1.0f), kep::Vector3(1.0f,-1.0f,-1.0f), kep::Vector3(0.5f, 1.0f,-1.0f), kep::Vector3(0.0f, 0.0f, 1.0f).normalized());
+        double singleCastTime = 0.0f;
+        EXEC_TIMER_SAMPLE(singleCastTime,
+        Contact::rayTriangle(ray, tri);
+        );
+        printf("single ray cast time:   %.9f s \n", singleCastTime);
+        printf("predicted cast time:    %f s \n", singleCastTime * ((m_width*m_height)* numTri));
+        
+        double castTime = 0.0f;
+        EXEC_TIMER(castTime,
         updateRays();
+        );
+        printf("actual cast time:  %f s \n", castTime);
+        printf("\n");
+    }
+    
     updateViewCone();
 }
 
@@ -107,22 +132,33 @@ void RayCaster::updateRays()
     for(int i = 0; i<m_width*m_height; i++)
     {
         
-        Ray tempRay = Ray(m_transform->m_modelMat * m_rays[i]->s, kep::Matrix3(m_transform->m_modelMat) * m_rays[i]->d);
-        Contact c = Contact::rayTriangle(tempRay, RayReciever::s_rayRecievers[0]->m_tTriangles[0]);
-        if(c.e)
+        Ray tempRay = Ray(m_transform->m_modelMatUnscaled * m_rays[i]->s, kep::Matrix3(m_transform->m_modelMatUnscaled) * m_rays[i]->d);
+        bool collided = false;
+        for(int j = 0; j<RayReciever::s_rayRecievers.size(); j++)
         {
-            //printf("collision\n");
-            m_rLines[i]->m_p0 = tempRay.s;
-            m_rLines[i]->m_p1 = c.p;
-            m_rLines[i]->m_enabled = true;
+            RayReciever::s_rayRecievers[j]->updateR();
+            for(int k = 0; k<RayReciever::s_rayRecievers[j]->m_numTriangles; k++)
+            {
+                if(kep::dot(RayReciever::s_rayRecievers[j]->m_tTriangles[k].n, tempRay.d) > 0.0f) // check if polygon normal is facing away
+                    continue;
+                Contact c = Contact::rayTriangle(tempRay, RayReciever::s_rayRecievers[j]->m_tTriangles[k]);
+                if(c.e)
+                {
+                    //printf("collision\n");
+                    m_rLines[i]->m_p0 = tempRay.s;
+                    m_rLines[i]->m_p1 = c.p;
+                    m_rLines[i]->m_enabled = true;
+                    collided = true;
+                    break;
+                }
+            }
         }
-        else
-        {
-            //printf("no collision\n");
-            m_rLines[i]->m_p0 = tempRay.s;
-            m_rLines[i]->m_p1 = tempRay.s + (tempRay.d * m_farPlane);
+//         m_rLines[i]->m_p0 = tempRay.s;
+//         m_rLines[i]->m_p1 = tempRay.s + (tempRay.d * m_farPlane)
+        if(!collided)
             m_rLines[i]->m_enabled = false;
-        }
+        
+        
     }
 }
 
@@ -149,8 +185,8 @@ void RayCaster::updateViewCone()
 {
     for(int i = 0; i<4; i++)
     {
-        m_vcLines[i]->m_p0 = m_transform->m_modelMat*(m_viewCone[i].s + m_viewCone[i].d * m_nearPlane);
-        m_vcLines[i]->m_p1 = m_transform->m_modelMat*(m_viewCone[i].s + m_viewCone[i].d * m_farPlane);
+        m_vcLines[i]->m_p0 = m_transform->m_modelMatUnscaled*(m_viewCone[i].s + m_viewCone[i].d * m_nearPlane);
+        m_vcLines[i]->m_p1 = m_transform->m_modelMatUnscaled*(m_viewCone[i].s + m_viewCone[i].d * m_farPlane);
     }
     for(int i = 4; i<8; i++)
     {

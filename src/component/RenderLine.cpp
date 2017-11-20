@@ -3,12 +3,14 @@
 
 using namespace kelp;
 std::vector<kep::Vector3> RenderLine::m_verticies = std::vector<kep::Vector3>();
+std::vector<kep::Vector3> RenderLine::m_colours = std::vector<kep::Vector3>();
 
-RenderLine::RenderLine(kep::Vector3 _p0, kep::Vector3 _p1)
+RenderLine::RenderLine(kep::Vector3 _p0, kep::Vector3 _p1, kep::Vector3 _colour)
 {
     m_p0 = _p0;
     m_p1 = _p1;
     m_enabled = true;
+    m_colour = _colour;
 }
 RenderLine::~RenderLine()
 {
@@ -17,6 +19,13 @@ RenderLine::~RenderLine()
 
 void RenderLine::renderLines(Shader * _shader, Camera * _rc)
 {
+//     struct VecCol
+//     {
+//         kep::Vector3 col;
+//         
+//     };
+    //DO NOT draw heckin rainbows, the more different colours the slower this works
+    
     GLuint vao = 0;
 
     glGenVertexArrays(1, &vao);
@@ -54,6 +63,7 @@ void RenderLine::renderLines(Shader * _shader, Camera * _rc)
     glDeleteBuffers(1, &vbo);
     glDeleteVertexArrays(1, &vao);
     m_verticies.clear();
+    m_colours.clear();
 }
 
 void RenderLine::init()
@@ -66,6 +76,7 @@ void RenderLine::update()
     {
         m_verticies.push_back(m_p0);
         m_verticies.push_back(m_p1);
+        m_colours.push_back(m_colour);
     }
 }
 void RenderLine::render()

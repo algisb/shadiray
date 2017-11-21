@@ -35,43 +35,46 @@ void RayCaster::update()
     m_left = kep::cross(m_up, m_front);
     m_left.normalize();
     
-    if(kelp::Input::Keyboard::is(kelp::Input::Keyboard::KeyboardKey::KEY_T, kelp::Input::Keyboard::KeyboardAction::HELD))
-        m_transform->m_position +=  (m_front*kelp::Time::s_deltaT) * 10.0f;
-    if(kelp::Input::Keyboard::is(kelp::Input::Keyboard::KeyboardKey::KEY_G, kelp::Input::Keyboard::KeyboardAction::HELD))
-        m_transform->m_position +=  (m_front*kelp::Time::s_deltaT) * -10.0f;
-    if(kelp::Input::Keyboard::is(kelp::Input::Keyboard::KeyboardKey::KEY_F, kelp::Input::Keyboard::KeyboardAction::HELD))
-        m_transform->m_position += (m_left*kelp::Time::s_deltaT) * 10.0f;
-    if(kelp::Input::Keyboard::is(kelp::Input::Keyboard::KeyboardKey::KEY_H, kelp::Input::Keyboard::KeyboardAction::HELD))
-        m_transform->m_position += (m_left*kelp::Time::s_deltaT) * -10.0f;
-    if(kelp::Input::Keyboard::is(kelp::Input::Keyboard::KeyboardKey::KEY_Y, kelp::Input::Keyboard::KeyboardAction::HELD))
-        m_transform->m_position += (m_up*kelp::Time::s_deltaT) * 10.0f;
-    if(kelp::Input::Keyboard::is(kelp::Input::Keyboard::KeyboardKey::KEY_N, kelp::Input::Keyboard::KeyboardAction::HELD))
-        m_transform->m_position += (m_up*kelp::Time::s_deltaT) * -10.0f;
+    const float movSpd = 20.0f * kelp::Time::s_deltaT;
     
+    if(kelp::Input::Keyboard::is(kelp::Input::Keyboard::KeyboardKey::KEY_T, kelp::Input::Keyboard::KeyboardAction::HELD))
+        m_transform->m_position += m_front * movSpd;
+    if(kelp::Input::Keyboard::is(kelp::Input::Keyboard::KeyboardKey::KEY_G, kelp::Input::Keyboard::KeyboardAction::HELD))
+        m_transform->m_position += m_front * -movSpd;
+    if(kelp::Input::Keyboard::is(kelp::Input::Keyboard::KeyboardKey::KEY_F, kelp::Input::Keyboard::KeyboardAction::HELD))
+        m_transform->m_position += m_left * movSpd;
+    if(kelp::Input::Keyboard::is(kelp::Input::Keyboard::KeyboardKey::KEY_H, kelp::Input::Keyboard::KeyboardAction::HELD))
+        m_transform->m_position += m_left * -movSpd;
+    if(kelp::Input::Keyboard::is(kelp::Input::Keyboard::KeyboardKey::KEY_Y, kelp::Input::Keyboard::KeyboardAction::HELD))
+        m_transform->m_position += m_up * movSpd;
+    if(kelp::Input::Keyboard::is(kelp::Input::Keyboard::KeyboardKey::KEY_N, kelp::Input::Keyboard::KeyboardAction::HELD))
+        m_transform->m_position += m_up * -movSpd;
+    
+    const float rotSpd = 70.0f * kelp::Time::s_deltaT;
     if(kelp::Input::Keyboard::is(kelp::Input::Keyboard::KeyboardKey::KEY_J, kelp::Input::Keyboard::KeyboardAction::HELD))
     {
         kep::Quaternion q;
-        q.setEuler(kep::Vector3(0.0f, 1.0f, 0.0f), -1.0f);
+        q.setEuler(kep::Vector3(0.0f, 1.0f, 0.0f), -rotSpd);
         m_transform->m_orientation *= q;
     }
     if(kelp::Input::Keyboard::is(kelp::Input::Keyboard::KeyboardKey::KEY_L, kelp::Input::Keyboard::KeyboardAction::HELD))
     {
         kep::Quaternion q;
-        q.setEuler(kep::Vector3(0.0f, 1.0f, 0.0f), 1.0f);
+        q.setEuler(kep::Vector3(0.0f, 1.0f, 0.0f), rotSpd);
         m_transform->m_orientation *= q;
     }
     
     if(kelp::Input::Keyboard::is(kelp::Input::Keyboard::KeyboardKey::KEY_I, kelp::Input::Keyboard::KeyboardAction::HELD))
     {
         kep::Quaternion q;
-        q.setEuler(m_left, -1.0f);
+        q.setEuler(m_left, -rotSpd);
         m_transform->m_orientation *= q;
     }
     
     if(kelp::Input::Keyboard::is(kelp::Input::Keyboard::KeyboardKey::KEY_K, kelp::Input::Keyboard::KeyboardAction::HELD))
     {   
         kep::Quaternion q;
-        q.setEuler(m_left, 1.0f);
+        q.setEuler(m_left, rotSpd);
         m_transform->m_orientation *= q;
     }
     if(kelp::Input::Keyboard::is(kelp::Input::Keyboard::KeyboardKey::KEY_SPACE, kelp::Input::Keyboard::KeyboardAction::PRESSED))
@@ -88,7 +91,7 @@ void RayCaster::update()
         kep::Vector3 p;
         double singleCastTime = 0.0f;
         EXEC_TIMER_SAMPLE(singleCastTime,
-        rayTriangle0(&ray, &tri, &p);
+        rayTriangleBForce(&ray, &tri, &p);
         );
         printf("single ray cast time:   %.9f s \n", singleCastTime);
         printf("predicted cast time:    %f s \n", singleCastTime * ((m_width*m_height)* numTri));
@@ -143,7 +146,7 @@ void RayCaster::updateRays()
                 if(kep::dot(RayReciever::s_rayRecievers[j]->m_tTriangles[k].n, tempRay.d) > 0.0f) // check if polygon normal is facing away
                     continue;
                 kep::Vector3 p;
-                if(rayTriangle0(&tempRay, &RayReciever::s_rayRecievers[j]->m_tTriangles[k], &p) == 0)
+                if(rayTriangleBForce(&tempRay, &RayReciever::s_rayRecievers[j]->m_tTriangles[k], &p) == 1)
                 {
                     //printf("collision\n");
                     m_rLines[i]->m_p0 = tempRay.s;
@@ -154,12 +157,8 @@ void RayCaster::updateRays()
                 }
             }
         }
-//         m_rLines[i]->m_p0 = tempRay.s;
-//         m_rLines[i]->m_p1 = tempRay.s + (tempRay.d * m_farPlane)
         if(!collided)
             m_rLines[i]->m_enabled = false;
-        
-        
     }
 }
 

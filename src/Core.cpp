@@ -24,6 +24,8 @@ Core::Core()
     m_sphereMesh = new MeshLoad("./models/sphereUV.obj", "./models/");
     m_cubeMesh = new MeshLoad("./models/cube.obj", "./models/");
     m_highPolyMesh = new MeshLoad("./models/peps.obj", "./models/");
+    m_sphereSmoothMesh = new MeshLoad("./models/sphereUVsmooth.obj", "./models/");
+    m_monkeyMesh = new MeshLoad("./models/monkey.obj", "./models/");
     
     m_shaderMinimal = new ShaderMin();
     m_shaderDefault = new ShaderDefault();

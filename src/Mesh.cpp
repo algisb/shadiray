@@ -151,33 +151,48 @@ MeshLoad::MeshLoad(const char * _objPath, const char * _mtlDir)
 
     }
     
-    if(attrib.normals.size() != 0)
-    {
-        m_dataN = new float[m_numVertices*3];
-        size_t dataN_i = 0;
-        
-        UNPACK_OBJ(
-                    for(size_t i = 0; i<3; i++)
-                    {
-                        
-                        m_dataN[dataN_i] = attrib.normals[3*idx.normal_index+i];
-                        dataN_i++;
-                    }
-                    //printf("%f %f %f \n", attrib.normals[3*idx.normal_index+0], attrib.normals[3*idx.normal_index+1], attrib.normals[3*idx.normal_index+2]);
-                  );
-        
-        glGenBuffers(1, &m_vboN);
-        glBindBuffer(GL_ARRAY_BUFFER, m_vboN);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m_numVertices * 3, m_dataN, GL_STATIC_DRAW);
 
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
-        glEnableVertexAttribArray(1);
-        
-        //delete data from heap
-        //delete[] dataN;
-        
+    m_dataN = new float[m_numVertices*3];
+    size_t dataN_i = 0;
+    if(false)//(attrib.normals.size() != 0)
+    {
+    UNPACK_OBJ(
+                for(size_t i = 0; i<3; i++)
+                {
+                    
+                    m_dataN[dataN_i] = attrib.normals[3*idx.normal_index+i];
+                    dataN_i++;
+                }
+                //printf("%f %f %f \n", attrib.normals[3*idx.normal_index+0], attrib.normals[3*idx.normal_index+1], attrib.normals[3*idx.normal_index+2]);
+                );
     }
+    else//gen normals
+    {
+        
+        for(int i = 0; i< m_numVertices*3; i = i + 3*3)
+        {
+            kep::Vector3 p[3];
+                for(int k = 0; k<9; k = k + 3)
+                    p[k/3] = kep::Vector3(m_dataV[i+k+0], m_dataV[i+k+1], m_dataV[i+k+2]);
+                
+            kep::Vector3 v1 = p[1] - p[0];
+            kep::Vector3 v2 = p[2] - p[0];
+            kep::Vector3 n = kep::cross(v1,v2).normalized();
+            
+            for(int k = 0; k<9; k = k + 3)
+                for(int j = 0; j<3; j++)
+                m_dataN[i+k+j] = n.data[j];
+        }
+    }
+    glGenBuffers(1, &m_vboN);
+    glBindBuffer(GL_ARRAY_BUFFER, m_vboN);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m_numVertices * 3, m_dataN, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(1);
     
+    //delete data from heap
+    //delete[] dataN;
     
     if(attrib.texcoords.size() != 0)
     {

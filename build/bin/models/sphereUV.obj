@@ -1,6 +1,6 @@
 # Blender v2.78 (sub 0) OBJ File: ''
 # www.blender.org
-mtllib sphereUVus.mtl
+mtllib sphereUV.mtl
 o Sphere
 v 0.000000 -1.000000 0.000000
 v 0.038060 0.980785 -0.191342

@@ -85,9 +85,10 @@ void RayCaster::update()
         
         Ray ray(kep::Vector3(), kep::Vector3(0.0f, 0.0f, -1.0f).normalized());
         Triangle tri(kep::Vector3(-1.0f,-1.0f,-1.0f), kep::Vector3(1.0f,-1.0f,-1.0f), kep::Vector3(0.5f, 1.0f,-1.0f), kep::Vector3(0.0f, 0.0f, 1.0f).normalized());
+        kep::Vector3 p;
         double singleCastTime = 0.0f;
         EXEC_TIMER_SAMPLE(singleCastTime,
-        Contact::rayTriangle(ray, tri);
+        rayTriangle0(&ray, &tri, &p);
         );
         printf("single ray cast time:   %.9f s \n", singleCastTime);
         printf("predicted cast time:    %f s \n", singleCastTime * ((m_width*m_height)* numTri));
@@ -141,12 +142,12 @@ void RayCaster::updateRays()
             {
                 if(kep::dot(RayReciever::s_rayRecievers[j]->m_tTriangles[k].n, tempRay.d) > 0.0f) // check if polygon normal is facing away
                     continue;
-                Contact c = Contact::rayTriangle(tempRay, RayReciever::s_rayRecievers[j]->m_tTriangles[k]);
-                if(c.e)
+                kep::Vector3 p;
+                if(rayTriangle0(&tempRay, &RayReciever::s_rayRecievers[j]->m_tTriangles[k], &p) == 0)
                 {
                     //printf("collision\n");
                     m_rLines[i]->m_p0 = tempRay.s;
-                    m_rLines[i]->m_p1 = c.p;
+                    m_rLines[i]->m_p1 = p;
                     m_rLines[i]->m_enabled = true;
                     collided = true;
                     break;

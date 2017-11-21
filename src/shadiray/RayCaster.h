@@ -5,7 +5,7 @@
 #include "component/RenderLine.h"
 #include "component/Transform.h"
 #include "Input.h"
-#include "Contact.h"
+#include "Ray.h"
 
 namespace shad
 {

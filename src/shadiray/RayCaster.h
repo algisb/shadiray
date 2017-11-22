@@ -6,6 +6,7 @@
 #include "component/Transform.h"
 #include "Input.h"
 #include "Ray.h"
+#include "Triangle.h"
 
 namespace shad
 {
@@ -38,7 +39,8 @@ namespace shad
         void render();
         
         void initRays();
-        void updateRays();
+        void updateRays(int (*_testFunc)(Ray *, Triangle *,  kep::Vector3 * ));
+        void raycast0(int (*_testFunc)(Ray *, Triangle *,  kep::Vector3 * ));//each ray against every triangle
         
         void initViewCone();
         void updateViewCone();

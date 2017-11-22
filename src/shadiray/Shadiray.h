@@ -129,10 +129,11 @@ namespace shad
             return 0;
     }
 
-    inline int rayTriangleMT97(Ray * _ray, Triangle * _triangle,  kep::Vector3 * o_point)// 63 flops
+    
+    inline int rayTriangleMT97(Ray * _ray, Triangle * _triangle,  kep::Vector3 * o_point)// 64 flops
     {
         kep::Vector3 edge1, edge2, pvec, tvec, qvec;
-        float det, inv_det, u, v, t;
+        float det, inv_det, u, v, w, t;
         edge1 = _triangle->p[1] - _triangle->p[0];// 3 flops
         edge2 = _triangle->p[2] - _triangle->p[0];// 3 flops
         
@@ -155,10 +156,16 @@ namespace shad
         v = kep::dot(_ray->d, qvec) * inv_det;// 8 flops
         if(v < 0.0f || v > 1.0f)
             return 0;
+        
+        w = u + v;//1 flop
+        if(w < 0.0f || w > 1.0f)
+            return 0;
+        
         t = kep::dot(edge2, qvec) * inv_det;// 8 flops
         *o_point = _ray->s + _ray->d * t; // 6 flops
         return 1;;
     }
+
 };
 
 

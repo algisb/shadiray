@@ -35,6 +35,7 @@ void World::update()
     for(int i = 0; i< m_entities.size(); i++)
         m_entities[i]->render();
     RenderLine::renderLines(m_core->m_shaderMinimal, m_renderCamera);
+    RenderLineUI::renderLines(m_core->m_shaderMinimal, m_renderCamera);
     
 }
 

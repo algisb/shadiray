@@ -25,7 +25,7 @@ static void error_callback(int error, const char *description)
 
 
 
-int main(void)
+int main(int _argc, char ** _argv)
 {
     GLFWwindow *window;
         
@@ -58,7 +58,7 @@ int main(void)
     printf( "RENDERER = %s\n", glGetString( GL_RENDERER ) ) ;
     printf( "VERSION = %s\n", glGetString( GL_VERSION ) ) ;
     //////////////////////////////////////////////////////////////
-    kelp::Core * core = new kelp::Core();
+    kelp::Core * core = new kelp::Core(_argc, _argv);
     while (!glfwWindowShouldClose(window))
     {
         kelp::Time::calc();//start timer

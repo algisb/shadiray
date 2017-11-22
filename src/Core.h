@@ -47,11 +47,13 @@ namespace kelp
         MeshLoad * m_sphereSmoothMesh;
         MeshLoad * m_monkeyMesh;
         
+        MeshLoad * m_externalMesh;
+        
         ShaderMin * m_shaderMinimal;
         ShaderDefault * m_shaderDefault;
         
         World * m_world;
-        Core();
+        Core(int _argc, char ** _argv);
         ~Core();
         void update();
     };

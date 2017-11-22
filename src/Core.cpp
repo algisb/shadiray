@@ -7,8 +7,9 @@
 
 using namespace kelp;
 
-Core::Core()
+Core::Core(int _argc, char ** _argv)
 {
+    
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_DEPTH_TEST);
@@ -26,6 +27,10 @@ Core::Core()
     m_highPolyMesh = new MeshLoad("./models/peps.obj", "./models/");
     m_sphereSmoothMesh = new MeshLoad("./models/sphereUVsmooth.obj", "./models/");
     m_monkeyMesh = new MeshLoad("./models/monkey.obj", "./models/");
+    if(_argc > 1)
+        m_externalMesh = new MeshLoad(_argv[1], "./models/");
+    else
+        m_externalMesh = NULL;
     
     m_shaderMinimal = new ShaderMin();
     m_shaderDefault = new ShaderDefault();

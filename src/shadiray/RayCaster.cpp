@@ -121,13 +121,12 @@ void RayCaster::initRays()
     }
     m_owner->addComponent(new kelp::RenderLineUI(kep::Vector3(-6,-4,-10), kep::Vector3(-4,-4, -10)));
 }
-
 #define TEST_FACILITY(_func2Test)\
-printf("num rays:   %d \n", m_width*m_height);\
-int numTri = 0;\
+printf("num rays:   %llu \n", (uint64_t)(m_width*m_height));\
+uint64_t numTri = 0;\
 for(int i = 0; i<RayReciever::s_rayRecievers.size();i++)\
     numTri += RayReciever::s_rayRecievers[i]->m_numTriangles;\
-printf("num triangles:  %d \n", numTri);\
+printf("num triangles:  %llu \n", numTri);\
 Ray ray(kep::Vector3(), kep::Vector3(0.0f, 0.0f, -1.0f).normalized());\
 Triangle tri(kep::Vector3(-1.0f,-1.0f,-1.0f), kep::Vector3(1.0f,-1.0f,-1.0f), kep::Vector3(0.5f, 1.0f,-1.0f), kep::Vector3(0.0f, 0.0f, 1.0f).normalized());\
 kep::Vector3 p;\
@@ -136,7 +135,7 @@ EXEC_TIMER_SAMPLE(singleCastTime,\
 _testFunc(&ray, &tri, &p);\
 );\
 printf("single ray test time:   %.9f s \n", singleCastTime);\
-printf("predicted total test time:    %f s \n", singleCastTime * ((m_width*m_height)* numTri));\
+printf("predicted total test time:    %f s \n", singleCastTime * (double)((m_width*m_height)* (double)numTri));\
 double castTime = 0.0f;\
 EXEC_TIMER(castTime,\
 _func2Test;\

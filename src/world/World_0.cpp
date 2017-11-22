@@ -89,24 +89,37 @@ World_0::World_0(Core * _core) : World(_core)
     
     
 
-    
-    refEntity = new Entity(this, "monkey");
-    refEntity->addComponent(new Transform(
-                                          kep::Vector3(5.0f, -5.0f, -10.0f),
-                                          kep::Quaternion(), 
-                                          kep::Vector3(1.0f, 1.0f, 1.0f)
-                                         ));
-    refEntity->addComponent(new shad::RayReciever());
-    refEntity->addComponent(new Render(m_core->m_monkeyMesh, m_core->m_shaderDefault, RenderMode::SOLID));
-    
-    refEntity = new Entity(this, "cube");
-    refEntity->addComponent(new Transform(
-                                          kep::Vector3(-5.0f, -5.0f, -10.0f),
-                                          kep::Quaternion(), 
-                                          kep::Vector3(1.0f, 1.0f, 1.0f)
-                                         ));
-    refEntity->addComponent(new shad::RayReciever());
-    refEntity->addComponent(new Render(m_core->m_cubeMesh, m_core->m_shaderDefault, RenderMode::SOLID));
+    if(m_core->m_externalMesh == NULL)
+    {
+        refEntity = new Entity(this, "monkey");
+        refEntity->addComponent(new Transform(
+                                            kep::Vector3(5.0f, -5.0f, -10.0f),
+                                            kep::Quaternion(), 
+                                            kep::Vector3(1.0f, 1.0f, 1.0f)
+                                            ));
+        refEntity->addComponent(new shad::RayReciever());
+        refEntity->addComponent(new Render(m_core->m_monkeyMesh, m_core->m_shaderDefault, RenderMode::SOLID));
+        
+        refEntity = new Entity(this, "cube");
+        refEntity->addComponent(new Transform(
+                                            kep::Vector3(-5.0f, -5.0f, -10.0f),
+                                            kep::Quaternion(), 
+                                            kep::Vector3(1.0f, 1.0f, 1.0f)
+                                            ));
+        refEntity->addComponent(new shad::RayReciever());
+        refEntity->addComponent(new Render(m_core->m_cubeMesh, m_core->m_shaderDefault, RenderMode::SOLID));
+    }
+    else
+    {
+        refEntity = new Entity(this, "external");
+        refEntity->addComponent(new Transform(
+                                            kep::Vector3(0.0f, -4.0f, -10.0f),
+                                            kep::Quaternion(), 
+                                            kep::Vector3(1.0f, 1.0f, 1.0f)
+                                            ));
+        refEntity->addComponent(new shad::RayReciever());
+        refEntity->addComponent(new Render(m_core->m_externalMesh, m_core->m_shaderDefault, RenderMode::SOLID));
+    }
 
     
 }

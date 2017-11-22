@@ -119,14 +119,16 @@ void RayCaster::initRays()
             m_owner->addComponent(m_rLines[tIndex]);
         }
     }
-    m_owner->addComponent(new kelp::RenderLineUI(kep::Vector3(-6,-4,-10), kep::Vector3(-4,-4, -10)));
+    //m_owner->addComponent(new kelp::RenderLineUI(kep::Vector3(-6,-4,-10), kep::Vector3(-4,-4, -10)));
 }
 #define TEST_FACILITY(_func2Test)\
-printf("num rays:   %llu \n", (uint64_t)(m_width*m_height));\
+uint64_t numRays = (m_width*m_height);\
+printf("num rays:   %llu \n", numRays);\
 uint64_t numTri = 0;\
 for(int i = 0; i<RayReciever::s_rayRecievers.size();i++)\
     numTri += RayReciever::s_rayRecievers[i]->m_numTriangles;\
 printf("num triangles:  %llu \n", numTri);\
+printf("num tests:  %llu \n", numTri*numRays);\
 Ray ray(kep::Vector3(), kep::Vector3(0.0f, 0.0f, -1.0f).normalized());\
 Triangle tri(kep::Vector3(-1.0f,-1.0f,-1.0f), kep::Vector3(1.0f,-1.0f,-1.0f), kep::Vector3(0.5f, 1.0f,-1.0f), kep::Vector3(0.0f, 0.0f, 1.0f).normalized());\
 kep::Vector3 p;\
@@ -134,13 +136,14 @@ double singleCastTime = 0.0f;\
 EXEC_TIMER_SAMPLE(singleCastTime,\
 _testFunc(&ray, &tri, &p);\
 );\
-printf("single ray test time:   %.9f s \n", singleCastTime);\
-printf("predicted total test time:    %f s \n", singleCastTime * (double)((m_width*m_height)* (double)numTri));\
-double castTime = 0.0f;\
-EXEC_TIMER(castTime,\
+printf("1 ray vs 1 triangle test time:   %.9f s \n", singleCastTime);\
+printf("all rays vs 1 triangle test time:   %.9f s \n", singleCastTime * numRays);\
+printf("predicted total test time:    %f s \n", singleCastTime * (double)(numRays* numTri));\
+double testTime = 0.0f;\
+EXEC_TIMER(testTime ,\
 _func2Test;\
 );\
-printf("actual test time:  %f s \n", castTime);\
+printf("actual test time:  %f s \n", testTime );\
 printf("\n");
 
 void RayCaster::updateRays(int (*_testFunc)(Ray *, Triangle *,  kep::Vector3 * ))
@@ -175,6 +178,30 @@ void RayCaster::raycast0(int (*_testFunc)(Ray *, Triangle *,  kep::Vector3 * ))
         }
         if(!collided)
             m_rLines[i]->m_enabled = false;
+    }
+}
+
+void RayCaster::raycast1(int (*_testFunc)(Ray *, Triangle *,  kep::Vector3 * ))
+{
+    for(int j = 0; j<RayReciever::s_rayRecievers.size(); j++)
+    {
+        RayReciever::s_rayRecievers[j]->updateR();
+        for(int k = 0; k<RayReciever::s_rayRecievers[j]->m_numTriangles; k++)
+        {
+            for(int i = 0; i<m_width*m_height; i++)
+            {
+                Ray tempRay = Ray(m_transform->m_modelMatUnscaled * m_rays[i]->s, kep::Matrix3(m_transform->m_modelMatUnscaled) * m_rays[i]->d);
+                if(kep::dot(RayReciever::s_rayRecievers[j]->m_tTriangles[k].n, tempRay.d) > 0.0f) // check if polygon normal is facing away
+                    continue;
+                kep::Vector3 p;
+                if(_testFunc(&tempRay, &RayReciever::s_rayRecievers[j]->m_tTriangles[k], &p) == 1)
+                {
+                    m_rLines[i]->m_p0 = tempRay.s;
+                    m_rLines[i]->m_p1 = p;
+                    m_rLines[i]->m_enabled = true;
+                }
+            }
+        }
     }
 }
 

@@ -48,7 +48,7 @@ World_0::World_0(Core * _core) : World(_core)
                                          ));
     
 
-    refEntity->addComponent(new shad::RayCaster(w, h, 2.0f, 100.0f, 0.01f));
+    refEntity->addComponent(new shad::RayCaster(w, h, 2.0f, 100.0f, 0.01f)); //<<---------------------/////////////////////////////////////////////////////////////
     refEntity->addComponent(new Render(m_core->m_sphereMesh, m_core->m_shaderMinimal, RenderMode::SOLID, kep::Vector3(0.0f, 0.0f, 1.0f)));
     
    //////////////////////////////////////////////////////////////////////////////////////////// 

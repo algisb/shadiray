@@ -2,7 +2,7 @@
 #include "RayReciever.h"
 #include <Time.h>
 #include "Shadiray.h"
-
+#include "Contact.h"
 using namespace shad;
 RayCaster::RayCaster(int _width, int _height, float _nearPlane, float _farPlane, float _raySpread)
 {
@@ -261,6 +261,8 @@ void RayCaster::updateViewCone()
 
 void RayCaster::raycastBox(int (*_testFunc)(Ray *, Triangle *,  kep::Vector3 * ))
 {
+    Contacts contacts;
+    
     for(int j = 0; j<RayReciever::s_rayRecievers.size(); ++j)
         for(int k = 0; k<RayReciever::s_rayRecievers[j]->m_numTriangles; ++k)
             
@@ -274,8 +276,14 @@ void RayCaster::raycastBox(int (*_testFunc)(Ray *, Triangle *,  kep::Vector3 * )
                         int xy = x*m_height + y;
                         m_rLines[xy]->m_p0 = tempRay.s;
                         m_rLines[xy]->m_p1 = p;
+                        contacts.push_back(new Contact(p, tempRay, RayReciever::s_rayRecievers[j]->m_tTriangles[k]));
                     }
                 }
+    //Contact::printToConsole(contacts);
+    Contact::writeToLogFile(contacts);
+    for(uint64_t i = 0; i<contacts.size(); i++)
+        delete contacts[i];
+    contacts.clear();
     
 }
 void RayCaster::initBoxVolume()

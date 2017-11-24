@@ -131,7 +131,7 @@ void RenderLine2::renderLines(Shader * _shader, Camera * _rc)
     glUniformMatrix4fv(_shader->m_shaderModelMatLocation, 1, 
                        GL_FALSE, &m4.d[0][0]);
     glUniformMatrix4fv(_shader->m_shaderViewMatLocation, 1, 
-                       GL_FALSE, &m4.d[0][0]);
+                       GL_FALSE, &_rc->m_viewMat.d[0][0]);
     glUniformMatrix4fv(_shader->m_shaderProjMatLocation, 1, 
                        GL_FALSE, &_rc->m_projectionMat.d[0][0]);
     glUniform3fv(_shader->m_shaderColourLocation, 1, kep::Vector3(1.0f, 0.0f, 0.0f).data);

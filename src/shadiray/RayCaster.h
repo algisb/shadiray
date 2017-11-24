@@ -31,6 +31,10 @@ namespace shad
         Ray m_viewCone[4];//rays descrbing the viewcone
         kelp::RenderLine * m_vcLines[12];//used for drawing viewcone
         
+        kep::Vector3 m_box[8];
+        kelp::RenderLine * m_bLines[12];
+        
+        
         RayCaster(int _width, int _height, float _nearPlane, float _farPlane, float _raySpread);
         ~RayCaster();
         
@@ -40,11 +44,14 @@ namespace shad
         
         void initRays();
         void updateRays(int (*_testFunc)(Ray *, Triangle *,  kep::Vector3 * ));
-        void raycast0(int (*_testFunc)(Ray *, Triangle *,  kep::Vector3 * ));//each ray against every triangle, better for raytracing
-        void raycast1(int (*_testFunc)(Ray *, Triangle *,  kep::Vector3 * ));//all rays against each triangle
+        void raycastCone(int (*_testFunc)(Ray *, Triangle *,  kep::Vector3 * ));//each ray against every triangle, better for raytracing
         
         void initViewCone();
         void updateViewCone();
+        
+        void raycastBox(int (*_testFunc)(Ray *, Triangle *,  kep::Vector3 * ));
+        
+        void initBoxVolume();
         
     };  
 };

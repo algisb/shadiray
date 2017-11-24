@@ -162,6 +162,8 @@ namespace shad
             return 0;
         
         t = kep::dot(edge2, qvec) * inv_det;// 8 flops
+        if(t < 0.0f)
+            return 0;
         *o_point = _ray->s + _ray->d * t; // 6 flops
         return 1;;
     }

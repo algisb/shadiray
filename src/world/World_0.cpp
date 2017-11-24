@@ -12,10 +12,14 @@ World_0::World_0(Core * _core) : World(_core)
 
     
     Entity * refEntity = NULL;
+    const int w = 256;
+    const int h = 256;
+    const int l = 256;
+    kep::Vector3 o(l/2,w/2,h/2);
     //////////////////////CAM/////////////////////////
     refEntity = new Entity(this, "camera");//TODO: allow it so this can insted be another entity acting as a root node(scenegraph)
     refEntity->addComponent(new Transform(
-                                          kep::Vector3(0.0f, 0.0f, 20.0f),
+                                          o + kep::Vector3(0.0f, 0.0f, 20.0f),
                                           kep::Quaternion(), 
                                           kep::Vector3(1.0f, 1.0f, .0f)
                                          ));
@@ -36,7 +40,7 @@ World_0::World_0(Core * _core) : World(_core)
     
     refEntity = new Entity(this, "Point Light");
     refEntity->addComponent(new Transform(
-                                        kep::Vector3(2.0f, 4.0f, -10.0f),
+                                        o + kep::Vector3(2.0f, 4.0f, -10.0f),
                                         kep::Quaternion(), 
                                         kep::Vector3(0.2f, 0.2f, 0.2f)
                                         ));
@@ -49,12 +53,13 @@ World_0::World_0(Core * _core) : World(_core)
     
     refEntity = new Entity(this, "ray caster");
     refEntity->addComponent(new Transform(
-                                          kep::Vector3(0.0f, 0.0f, 0.0f),
+                                          o + kep::Vector3(0.0f, 0.0f, 0.0f),
                                           kep::Quaternion(), 
                                           kep::Vector3(0.1f, 0.1f, 0.1f)
                                          ));
     
-    refEntity->addComponent(new shad::RayCaster(256, 256, 2.0f, 100.0f, 0.01f));
+
+    refEntity->addComponent(new shad::RayCaster(w, h, 2.0f, 100.0f, 0.01f));
     refEntity->addComponent(new Render(m_core->m_sphereMesh, m_core->m_shaderMinimal, RenderMode::SOLID, kep::Vector3(0.0f, 0.0f, 1.0f)));
     
    //////////////////////////////////////////////////////////////////////////////////////////// 
@@ -62,7 +67,7 @@ World_0::World_0(Core * _core) : World(_core)
     
     refEntity = new Entity(this, "high poly");
     refEntity->addComponent(new Transform(
-                                          kep::Vector3(0.0f, 0.0f, -30.0f),
+                                          o + kep::Vector3(0.0f, 0.0f, -30.0f),
                                           kep::Quaternion(), 
                                           kep::Vector3(1.0f, 1.0f, 1.0f)
                                          ));
@@ -71,7 +76,7 @@ World_0::World_0(Core * _core) : World(_core)
     
     refEntity = new Entity(this, "plane");
     refEntity->addComponent(new Transform(
-                                          kep::Vector3(0.0f, 0.0f, -20.0f),
+                                          o + kep::Vector3(0.0f, 0.0f, -20.0f),
                                           kep::Quaternion(kep::Vector3(1,0,0), -90.0f), 
                                           kep::Vector3(20.0f, 1.0f, 10.0f)
                                          ));
@@ -80,7 +85,7 @@ World_0::World_0(Core * _core) : World(_core)
     
     refEntity = new Entity(this, "plane");
     refEntity->addComponent(new Transform(
-                                          kep::Vector3(0.0f, -10.0f, -10.0f),
+                                          o + kep::Vector3(0.0f, -10.0f, -10.0f),
                                           kep::Quaternion(kep::Vector3(1,0,0), 0.0f), 
                                           kep::Vector3(20.0f, 1.0f, 10.0f)
                                          ));
@@ -93,7 +98,7 @@ World_0::World_0(Core * _core) : World(_core)
     {
         refEntity = new Entity(this, "monkey");
         refEntity->addComponent(new Transform(
-                                            kep::Vector3(5.0f, -5.0f, -10.0f),
+                                            o + kep::Vector3(5.0f, -5.0f, -10.0f),
                                             kep::Quaternion(), 
                                             kep::Vector3(1.0f, 1.0f, 1.0f)
                                             ));
@@ -102,7 +107,7 @@ World_0::World_0(Core * _core) : World(_core)
         
         refEntity = new Entity(this, "cube");
         refEntity->addComponent(new Transform(
-                                            kep::Vector3(-5.0f, -5.0f, -10.0f),
+                                            o + kep::Vector3(-5.0f, -5.0f, -10.0f),
                                             kep::Quaternion(), 
                                             kep::Vector3(1.0f, 1.0f, 1.0f)
                                             ));
@@ -113,7 +118,7 @@ World_0::World_0(Core * _core) : World(_core)
     {
         refEntity = new Entity(this, "external");
         refEntity->addComponent(new Transform(
-                                            kep::Vector3(0.0f, -4.0f, -10.0f),
+                                            o + kep::Vector3(0.0f, -4.0f, -10.0f),
                                             kep::Quaternion(), 
                                             kep::Vector3(1.0f, 1.0f, 1.0f)
                                             ));

@@ -25,6 +25,7 @@ void RayCaster::init()
     //////////////////////////////////////////////////////////
     initViewCone();
     initRays();
+    initBoxVolume();
 }
 
 void RayCaster::update()
@@ -93,7 +94,10 @@ void RayCaster::update()
         printf("64 flops per test \n");
         updateRays(rayTriangleMT97);
     }
-    
+    if(kelp::Input::Keyboard::is(kelp::Input::Keyboard::KeyboardKey::KEY_3, kelp::Input::Keyboard::KeyboardAction::PRESSED))
+    {
+        raycastBox(rayTriangleMT97);
+    }
     updateViewCone();
 }
 
@@ -113,7 +117,7 @@ void RayCaster::initRays()
         for(int i = 0; i<m_width; i++)
         {
             int tIndex = i+j*m_height;
-            m_rays[tIndex] = new Ray(m_transform->m_position, (kep::Vector3(i*m_raySpread, j*m_raySpread, 0.0f) + inD).normalized()); 
+            m_rays[tIndex] = new Ray(kep::Vector3(), (kep::Vector3(i*m_raySpread, j*m_raySpread, 0.0f) + inD).normalized()); 
             m_rLines[tIndex] =  new kelp::RenderLine(m_rays[tIndex]->s, m_rays[tIndex]->s + m_rays[tIndex]->d* m_farPlane);
             m_rLines[tIndex]->m_enabled = false;
             m_owner->addComponent(m_rLines[tIndex]);
@@ -136,7 +140,7 @@ double singleCastTime = 0.0f;\
 EXEC_TIMER_SAMPLE(singleCastTime,\
 _testFunc(&ray, &tri, &p);\
 );\
-printf("1 ray vs 1 triangle test time:   %.9f s \n", singleCastTime);\
+printf("1 ray vs 1 triangle average test time:   %.9f s \n", singleCastTime);\
 printf("all rays vs 1 triangle test time:   %.9f s \n", singleCastTime * numRays);\
 printf("predicted total test time:    %f s \n", singleCastTime * (double)(numRays* numTri));\
 double testTime = 0.0f;\
@@ -148,11 +152,14 @@ printf("\n");
 
 void RayCaster::updateRays(int (*_testFunc)(Ray *, Triangle *,  kep::Vector3 * ))
 {
+    for(int j = 0; j<RayReciever::s_rayRecievers.size(); j++)
+        RayReciever::s_rayRecievers[j]->updateR();
+    
     //different casting approaches can be used
-    TEST_FACILITY(raycast0(_testFunc));
+    TEST_FACILITY(raycastCone(_testFunc));
 }
 
-void RayCaster::raycast0(int (*_testFunc)(Ray *, Triangle *,  kep::Vector3 * ))
+void RayCaster::raycastCone(int (*_testFunc)(Ray *, Triangle *,  kep::Vector3 * ))
 {
     for(int i = 0; i<m_width*m_height; i++)
     {
@@ -160,7 +167,7 @@ void RayCaster::raycast0(int (*_testFunc)(Ray *, Triangle *,  kep::Vector3 * ))
         bool collided = false;
         for(int j = 0; j<RayReciever::s_rayRecievers.size(); j++)
         {
-            RayReciever::s_rayRecievers[j]->updateR();
+            //RayReciever::s_rayRecievers[j]->updateR();//take out side
             for(int k = 0; k<RayReciever::s_rayRecievers[j]->m_numTriangles; k++)
             {
                 if(kep::dot(RayReciever::s_rayRecievers[j]->m_tTriangles[k].n, tempRay.d) > 0.0f) // check if polygon normal is facing away
@@ -181,29 +188,6 @@ void RayCaster::raycast0(int (*_testFunc)(Ray *, Triangle *,  kep::Vector3 * ))
     }
 }
 
-void RayCaster::raycast1(int (*_testFunc)(Ray *, Triangle *,  kep::Vector3 * ))
-{
-    for(int j = 0; j<RayReciever::s_rayRecievers.size(); j++)
-    {
-        RayReciever::s_rayRecievers[j]->updateR();
-        for(int k = 0; k<RayReciever::s_rayRecievers[j]->m_numTriangles; k++)
-        {
-            for(int i = 0; i<m_width*m_height; i++)
-            {
-                Ray tempRay = Ray(m_transform->m_modelMatUnscaled * m_rays[i]->s, kep::Matrix3(m_transform->m_modelMatUnscaled) * m_rays[i]->d);
-                if(kep::dot(RayReciever::s_rayRecievers[j]->m_tTriangles[k].n, tempRay.d) > 0.0f) // check if polygon normal is facing away
-                    continue;
-                kep::Vector3 p;
-                if(_testFunc(&tempRay, &RayReciever::s_rayRecievers[j]->m_tTriangles[k], &p) == 1)
-                {
-                    m_rLines[i]->m_p0 = tempRay.s;
-                    m_rLines[i]->m_p1 = p;
-                    m_rLines[i]->m_enabled = true;
-                }
-            }
-        }
-    }
-}
 
 
 void RayCaster::initViewCone()
@@ -246,5 +230,64 @@ void RayCaster::updateViewCone()
         m_vcLines[i2]->m_p0 = m_vcLines[i0]->m_p1;
         m_vcLines[i2]->m_p1 = m_vcLines[i1]->m_p1;
     }
+}
+
+
+void RayCaster::raycastBox(int (*_testFunc)(Ray *, Triangle *,  kep::Vector3 * ))
+{
+    for(int j = 0; j<RayReciever::s_rayRecievers.size(); j++)
+    {
+        RayReciever::s_rayRecievers[j]->updateR();
+        for(int k = 0; k<RayReciever::s_rayRecievers[j]->m_numTriangles; k++)
+        {
+            for(int x = 0; x<m_width; x++)
+            {
+                for(int y = 0; y<m_height; y++)
+                {
+                    Ray tempRay = Ray(kep::Vector3(0,x,y), kep::Vector3(1, 0, 0));
+                    int xy = x*m_height + y;
+                    m_rLines[xy]->m_p0 = tempRay.s;
+                    m_rLines[xy]->m_p1 = tempRay.s + tempRay.d;
+                    m_rLines[xy]->m_enabled = true;
+                }
+            }
+        }
+    }
+    
+}
+void RayCaster::initBoxVolume()
+{
+
+    m_box[0] = kep::Vector3(0.0f, 0.0f, 0.0f);
+    m_box[1] = kep::Vector3(0.0f, m_width, 0.0f);
+    m_box[2] = kep::Vector3(0.0f, m_width, m_height);
+    m_box[3] = kep::Vector3(0.0f, 0.0f, m_height);
+    
+    m_box[4] = kep::Vector3(255, 0.0f, 0.0f);
+    m_box[5] = kep::Vector3(255, m_width, 0.0f);
+    m_box[6] = kep::Vector3(255, m_width, m_height);
+    m_box[7] = kep::Vector3(255, 0.0f, m_height);
+    
+    int l = 0;
+    for(int i = 0; i<4; i++)
+    {
+        int ind1 = i;
+        int ind2 = i+1;
+        if(ind2 > 3)
+            ind2 = 0;
+        
+        m_bLines[l] = new kelp::RenderLine(m_box[ind1], m_box[ind2]);
+        m_owner->addComponent(m_bLines[l]);
+        l++;
+        m_bLines[l] = new kelp::RenderLine(m_box[ind1+4], m_box[ind2+4]);
+        m_owner->addComponent(m_bLines[l]);
+        l++;
+        m_bLines[l] = new kelp::RenderLine(m_box[ind1], m_box[ind1+4]);
+        m_owner->addComponent(m_bLines[l]);
+        l++;
+    }
+        
+
+    
 }
 

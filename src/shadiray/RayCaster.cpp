@@ -26,6 +26,7 @@ void RayCaster::init()
     initViewCone();
     initRays();
     initBoxVolume();
+    //m_owner->addComponent(new Marker(kep::Vector3(-2.0f, 0.0f, 0.0f)));
 }
 
 void RayCaster::update()
@@ -190,6 +191,7 @@ void RayCaster::updateRays(int (*_testFunc)(Ray *, Triangle *,  kep::Vector3 * )
 
 void RayCaster::raycastCone(int (*_testFunc)(Ray *, Triangle *,  kep::Vector3 * ))
 {
+    Contacts contacts;
     for(int i = 0; i<m_width*m_height; ++i)
     {
         Ray tempRay = Ray(m_transform->m_modelMatUnscaled * m_rays[i]->s, kep::Matrix3(m_transform->m_modelMatUnscaled) * m_rays[i]->d);
@@ -206,12 +208,19 @@ void RayCaster::raycastCone(int (*_testFunc)(Ray *, Triangle *,  kep::Vector3 * 
                     m_rLines[i]->m_p1 = p;
                     m_rLines[i]->m_enabled = true;
                     collided = true;
+                    contacts.push_back(new Contact(p, tempRay, RayReciever::s_rayRecievers[j]->m_tTriangles[k]));
                     break;
                 }
             }
         if(!collided)
             m_rLines[i]->m_enabled = false;
     }
+    Contact::markContacts(contacts, m_owner);
+    Contact::writeToLogFile(contacts);
+    for(uint64_t i = 0; i<contacts.size(); i++)
+        delete contacts[i];
+    contacts.clear();
+    
 }
 
 
@@ -280,6 +289,7 @@ void RayCaster::raycastBox(int (*_testFunc)(Ray *, Triangle *,  kep::Vector3 * )
                     }
                 }
     //Contact::printToConsole(contacts);
+    Contact::markContacts(contacts, m_owner);
     Contact::writeToLogFile(contacts);
     for(uint64_t i = 0; i<contacts.size(); i++)
         delete contacts[i];

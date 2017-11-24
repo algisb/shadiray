@@ -16,7 +16,8 @@ namespace kelp
         World * m_world;
         std::string m_tag;
         std::vector<Component*> m_components;
-
+        std::vector<Component*> m_lateComponents;
+        
         Entity(World * _world, std::string _tag);
         ~Entity();
         void init();

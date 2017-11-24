@@ -26,6 +26,14 @@ void Entity::init()
 
 void Entity::update()
 {
+    //TEMPORARY CODE FOR ADDING COMPONENTS DURING RUNTIME
+    for(int i = 0; i< m_lateComponents.size(); i++)
+    {
+        m_lateComponents[i]->init();
+        m_components.push_back(m_lateComponents[i]);
+    }
+    m_lateComponents.clear();
+    
     for(int i = 0; i< m_components.size(); i++)
         m_components[i]->update();
 }

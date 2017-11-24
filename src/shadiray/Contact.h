@@ -3,6 +3,8 @@
 #include "Ray.h"
 #include "Triangle.h"
 #include <vector>
+#include "component/RenderLine.h"
+
 namespace shad
 {
     class Contact;
@@ -19,6 +21,23 @@ namespace shad
         ~Contact();
         static void writeToLogFile(Contacts & _contacts);
         static void printToConsole(Contacts & _contacts);
+        static void markContacts(Contacts & _contacts, kelp::Entity * _owner);
+    };
+    
+    class Marker : public kelp::Component
+    {
+    public:
+        const float m_size = 0.1f;
+        kep::Vector3 m_point;
+        kelp::RenderLine2 * m_line[3];
+        static std::vector<Marker*> s_markers;
+        Marker(kep::Vector3 _point = kep::Vector3());
+        ~Marker();
+        
+        void init();
+        void update();
+        void render();
+        
     };
     
 };

@@ -43,7 +43,7 @@ namespace shad
         void render();
         
         void initRays();
-        void updateRays(int (*_testFunc)(Ray *, Triangle *,  kep::Vector3 * ));
+        void updateRays(int (*_testFunc)(Ray *, Triangle *,  kep::Vector3 * ), int _type);
         void raycastCone(int (*_testFunc)(Ray *, Triangle *,  kep::Vector3 * ));//each ray against every triangle, better for raytracing
         
         void initViewCone();

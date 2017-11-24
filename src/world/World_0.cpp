@@ -34,18 +34,7 @@ World_0::World_0(Core * _core) : World(_core)
                                 true
                             ));
     
-    
-    //refEntity = new Entity(this, "Directional Light");
-    //refEntity->addComponent(new LightDirectional(m_core->m_shaderDefault, 0.5f, kep::Vector3(0.0f,0.0f,0.0f), kep::Vector3(1.0f, 1.0f, 1.0f)));
-    
-    refEntity = new Entity(this, "Point Light");
-    refEntity->addComponent(new Transform(
-                                        o + kep::Vector3(2.0f, 4.0f, -10.0f),
-                                        kep::Quaternion(), 
-                                        kep::Vector3(0.2f, 0.2f, 0.2f)
-                                        ));
-    refEntity->addComponent(new LightPoint(m_core->m_shaderDefault, 50.0f, kep::Vector3(0.0f, 0.0f, 0.0f)));
-    refEntity->addComponent(new Render(m_core->m_sphereMesh, m_core->m_shaderMinimal, RenderMode::SOLID));
+
     
     //m_renderCamera = empty[0]->getComponent<Camera>();/////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////
@@ -54,7 +43,7 @@ World_0::World_0(Core * _core) : World(_core)
     refEntity = new Entity(this, "ray caster");
     refEntity->addComponent(new Transform(
                                           o + kep::Vector3(0.0f, 0.0f, 0.0f),
-                                          kep::Quaternion(), 
+                                          kep::Quaternion(kep::Vector3(0,1,0), 90.0f), 
                                           kep::Vector3(0.1f, 0.1f, 0.1f)
                                          ));
     
@@ -65,41 +54,52 @@ World_0::World_0(Core * _core) : World(_core)
    //////////////////////////////////////////////////////////////////////////////////////////// 
     
     
-    refEntity = new Entity(this, "high poly");
-    refEntity->addComponent(new Transform(
-                                          o + kep::Vector3(0.0f, 0.0f, -30.0f),
-                                          kep::Quaternion(), 
-                                          kep::Vector3(1.0f, 1.0f, 1.0f)
-                                         ));
-    refEntity->addComponent(new Render(m_core->m_highPolyMesh, m_core->m_shaderDefault, RenderMode::SOLID));
-    
-    
-    refEntity = new Entity(this, "plane");
-    refEntity->addComponent(new Transform(
-                                          o + kep::Vector3(0.0f, 0.0f, -20.0f),
-                                          kep::Quaternion(kep::Vector3(1,0,0), -90.0f), 
-                                          kep::Vector3(20.0f, 1.0f, 10.0f)
-                                         ));
-    //refEntity->addComponent(new shad::RayReciever());
-    refEntity->addComponent(new Render(m_core->m_plane, m_core->m_shaderDefault, RenderMode::SOLID));
-    
-    refEntity = new Entity(this, "plane");
-    refEntity->addComponent(new Transform(
-                                          o + kep::Vector3(0.0f, -10.0f, -10.0f),
-                                          kep::Quaternion(kep::Vector3(1,0,0), 0.0f), 
-                                          kep::Vector3(20.0f, 1.0f, 10.0f)
-                                         ));
-    //refEntity->addComponent(new shad::RayReciever());
-    refEntity->addComponent(new Render(m_core->m_plane, m_core->m_shaderDefault, RenderMode::SOLID));
+
     
     
 
     if(m_core->m_externalMesh == NULL)
     {
+        refEntity = new Entity(this, "Point Light");
+        refEntity->addComponent(new Transform(
+                                            o + kep::Vector3(10.0f, 4.0f, 2.0f),
+                                            kep::Quaternion(), 
+                                            kep::Vector3(0.2f, 0.2f, 0.2f)
+                                            ));
+        refEntity->addComponent(new LightPoint(m_core->m_shaderDefault, 50.0f, kep::Vector3(0.0f, 0.0f, 0.0f)));
+        refEntity->addComponent(new Render(m_core->m_sphereMesh, m_core->m_shaderMinimal, RenderMode::SOLID));
+        
+        refEntity = new Entity(this, "high poly");
+        refEntity->addComponent(new Transform(
+                                            o + kep::Vector3(30.0f, 0.0f, 0.0f),
+                                            kep::Quaternion(kep::Vector3(0,1,0), 90.0f), 
+                                            kep::Vector3(1.0f, 1.0f, 1.0f)
+                                            ));
+        refEntity->addComponent(new Render(m_core->m_highPolyMesh, m_core->m_shaderDefault, RenderMode::SOLID));
+        
+        
+        refEntity = new Entity(this, "plane");
+        refEntity->addComponent(new Transform(
+                                            o + kep::Vector3(20.0f, 0.0f, 0.0f),
+                                            kep::Quaternion(kep::Vector3(0,0,1), -90.0f), 
+                                            kep::Vector3(10.0f, 1.0f, 20.0f)
+                                            ));
+        //refEntity->addComponent(new shad::RayReciever());
+        refEntity->addComponent(new Render(m_core->m_plane, m_core->m_shaderDefault, RenderMode::SOLID));
+        
+        refEntity = new Entity(this, "plane");
+        refEntity->addComponent(new Transform(
+                                            o + kep::Vector3(10.0f, -10.0f, 0.0f),
+                                            kep::Quaternion(kep::Vector3(1,0,0), 0.0f), 
+                                            kep::Vector3(10.0f, 1.0f, 20.0f)
+                                            ));
+        //refEntity->addComponent(new shad::RayReciever());
+        refEntity->addComponent(new Render(m_core->m_plane, m_core->m_shaderDefault, RenderMode::SOLID));
+        
         refEntity = new Entity(this, "monkey");
         refEntity->addComponent(new Transform(
-                                            o + kep::Vector3(5.0f, -5.0f, -10.0f),
-                                            kep::Quaternion(), 
+                                            o + kep::Vector3(10.0f, -5.0f, 5.0f),
+                                            kep::Quaternion(kep::Vector3(0,1,0), 90.0f), 
                                             kep::Vector3(1.0f, 1.0f, 1.0f)
                                             ));
         refEntity->addComponent(new shad::RayReciever());
@@ -107,8 +107,8 @@ World_0::World_0(Core * _core) : World(_core)
         
         refEntity = new Entity(this, "cube");
         refEntity->addComponent(new Transform(
-                                            o + kep::Vector3(-5.0f, -5.0f, -10.0f),
-                                            kep::Quaternion(), 
+                                            o + kep::Vector3(10.0f, -5.0f, -5.0f),
+                                            kep::Quaternion(kep::Vector3(0,1,0), 90.0f), 
                                             kep::Vector3(1.0f, 1.0f, 1.0f)
                                             ));
         refEntity->addComponent(new shad::RayReciever());
@@ -116,10 +116,13 @@ World_0::World_0(Core * _core) : World(_core)
     }
     else
     {
+        refEntity = new Entity(this, "Directional Light");
+        refEntity->addComponent(new LightDirectional(m_core->m_shaderDefault, 0.5f, kep::Vector3(0.0f,0.0f,0.0f), kep::Vector3(-1.0f, 1.0f, 0.0f)));
+        
         refEntity = new Entity(this, "external");
         refEntity->addComponent(new Transform(
-                                            o + kep::Vector3(0.0f, -4.0f, -10.0f),
-                                            kep::Quaternion(), 
+                                            o + kep::Vector3(10.0f, -4.0f, 0.0f),
+                                            kep::Quaternion(kep::Vector3(0,1,0), 90.0f), 
                                             kep::Vector3(1.0f, 1.0f, 1.0f)
                                             ));
         refEntity->addComponent(new shad::RayReciever());

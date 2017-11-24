@@ -83,20 +83,29 @@ void RayCaster::update()
 
     if(kelp::Input::Keyboard::is(kelp::Input::Keyboard::KeyboardKey::KEY_1, kelp::Input::Keyboard::KeyboardAction::PRESSED))
     {
-        printf("brute-force ray triangle intersection \n");
+        printf("Cone raycast brute-force ray triangle intersection \n");
         printf("77 flops per test \n");
-        updateRays(rayTriangleBForce);
+        updateRays(rayTriangleBForce, 0);
     }
     
     if(kelp::Input::Keyboard::is(kelp::Input::Keyboard::KeyboardKey::KEY_2, kelp::Input::Keyboard::KeyboardAction::PRESSED))
     {
-        printf("MT97 ray triangle intersection \n");
+        printf("Cone raycast MT97 ray triangle intersection \n");
         printf("64 flops per test \n");
-        updateRays(rayTriangleMT97);
+        updateRays(rayTriangleMT97, 0);
     }
     if(kelp::Input::Keyboard::is(kelp::Input::Keyboard::KeyboardKey::KEY_3, kelp::Input::Keyboard::KeyboardAction::PRESSED))
     {
-        raycastBox(rayTriangleMT97);
+        printf("Box raycast brute-force ray triangle intersection \n");
+        printf("64 flops per test \n");
+        updateRays(rayTriangleBForce, 1);
+    }
+    
+    if(kelp::Input::Keyboard::is(kelp::Input::Keyboard::KeyboardKey::KEY_4, kelp::Input::Keyboard::KeyboardAction::PRESSED))
+    {
+        printf("Box raycast MT97 ray triangle intersection \n");
+        printf("64 flops per test \n");
+        updateRays(rayTriangleMT97, 1);
     }
     updateViewCone();
 }
@@ -126,6 +135,7 @@ void RayCaster::initRays()
     //m_owner->addComponent(new kelp::RenderLineUI(kep::Vector3(-6,-4,-10), kep::Vector3(-4,-4, -10)));
 }
 #define TEST_FACILITY(_func2Test)\
+{\
 uint64_t numRays = (m_width*m_height);\
 printf("num rays:   %llu \n", numRays);\
 uint64_t numTri = 0;\
@@ -148,27 +158,44 @@ EXEC_TIMER(testTime ,\
 _func2Test;\
 );\
 printf("actual test time:  %f s \n", testTime );\
-printf("\n");
+printf("\n");\
+}
 
-void RayCaster::updateRays(int (*_testFunc)(Ray *, Triangle *,  kep::Vector3 * ))
+void RayCaster::updateRays(int (*_testFunc)(Ray *, Triangle *,  kep::Vector3 * ), int _type)
 {
     for(int j = 0; j<RayReciever::s_rayRecievers.size(); j++)
-        RayReciever::s_rayRecievers[j]->updateR();
+        RayReciever::s_rayRecievers[j]->updateR();//updates triangles using their model matrix
     
-    //different casting approaches can be used
-    TEST_FACILITY(raycastCone(_testFunc));
+    //different casting approaches
+    switch(_type)
+    {
+        case 0:
+            TEST_FACILITY(raycastCone(_testFunc));
+            break;
+        case 1:
+            for(int x = 0; x<m_width; x++)
+                for(int y = 0; y<m_height; y++)
+                {
+                    Ray tempRay = Ray(kep::Vector3(0,x,y), kep::Vector3(1, 0, 0).normalized());
+                    int xy = x*m_height + y;
+                    m_rLines[xy]->m_p0 = tempRay.s;
+                    m_rLines[xy]->m_p1 = tempRay.s + tempRay.d;
+                    m_rLines[xy]->m_enabled = true;
+                }
+            TEST_FACILITY(raycastBox(_testFunc));
+            break;
+    }
+    
 }
 
 void RayCaster::raycastCone(int (*_testFunc)(Ray *, Triangle *,  kep::Vector3 * ))
 {
-    for(int i = 0; i<m_width*m_height; i++)
+    for(int i = 0; i<m_width*m_height; ++i)
     {
         Ray tempRay = Ray(m_transform->m_modelMatUnscaled * m_rays[i]->s, kep::Matrix3(m_transform->m_modelMatUnscaled) * m_rays[i]->d);
         bool collided = false;
-        for(int j = 0; j<RayReciever::s_rayRecievers.size(); j++)
-        {
-            //RayReciever::s_rayRecievers[j]->updateR();//take out side
-            for(int k = 0; k<RayReciever::s_rayRecievers[j]->m_numTriangles; k++)
+        for(int j = 0; j<RayReciever::s_rayRecievers.size(); ++j)
+            for(int k = 0; k<RayReciever::s_rayRecievers[j]->m_numTriangles; ++k)
             {
                 if(kep::dot(RayReciever::s_rayRecievers[j]->m_tTriangles[k].n, tempRay.d) > 0.0f) // check if polygon normal is facing away
                     continue;
@@ -182,7 +209,6 @@ void RayCaster::raycastCone(int (*_testFunc)(Ray *, Triangle *,  kep::Vector3 * 
                     break;
                 }
             }
-        }
         if(!collided)
             m_rLines[i]->m_enabled = false;
     }
@@ -235,24 +261,21 @@ void RayCaster::updateViewCone()
 
 void RayCaster::raycastBox(int (*_testFunc)(Ray *, Triangle *,  kep::Vector3 * ))
 {
-    for(int j = 0; j<RayReciever::s_rayRecievers.size(); j++)
-    {
-        RayReciever::s_rayRecievers[j]->updateR();
-        for(int k = 0; k<RayReciever::s_rayRecievers[j]->m_numTriangles; k++)
-        {
-            for(int x = 0; x<m_width; x++)
-            {
-                for(int y = 0; y<m_height; y++)
+    for(int j = 0; j<RayReciever::s_rayRecievers.size(); ++j)
+        for(int k = 0; k<RayReciever::s_rayRecievers[j]->m_numTriangles; ++k)
+            
+            for(int x = 0; x<m_width; ++x)
+                for(int y = 0; y<m_height; ++y)
                 {
                     Ray tempRay = Ray(kep::Vector3(0,x,y), kep::Vector3(1, 0, 0));
-                    int xy = x*m_height + y;
-                    m_rLines[xy]->m_p0 = tempRay.s;
-                    m_rLines[xy]->m_p1 = tempRay.s + tempRay.d;
-                    m_rLines[xy]->m_enabled = true;
+                    kep::Vector3 p;
+                    if(_testFunc(&tempRay, &RayReciever::s_rayRecievers[j]->m_tTriangles[k], &p) == 1)
+                    {
+                        int xy = x*m_height + y;
+                        m_rLines[xy]->m_p0 = tempRay.s;
+                        m_rLines[xy]->m_p1 = p;
+                    }
                 }
-            }
-        }
-    }
     
 }
 void RayCaster::initBoxVolume()

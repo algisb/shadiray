@@ -27,7 +27,7 @@ namespace kelp
         void render();
     };
     
-    class RenderLineUI : public Component
+    class RenderLine2 : public Component
     {
     public:
         kep::Vector3 m_p0;
@@ -35,8 +35,8 @@ namespace kelp
         kep::Vector3 m_colour;
         static std::vector<kep::Vector3> m_verticies;
         static std::vector<kep::Vector3> m_colours; //1 colour for 2 verts
-        RenderLineUI(kep::Vector3 _p0, kep::Vector3 _p1, kep::Vector3 _colour = kep::Vector3(0.0f, 1.0f, 0.0f));
-        ~RenderLineUI();
+        RenderLine2(kep::Vector3 _p0, kep::Vector3 _p1, kep::Vector3 _colour = kep::Vector3(0.0f, 1.0f, 0.0f));
+        ~RenderLine2();
         static void renderLines(Shader * _shader, Camera * _rc);
         
         void init();

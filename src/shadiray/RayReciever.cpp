@@ -48,7 +48,16 @@ void RayReciever::init()
 
 void RayReciever::update()
 {
-
+    if(kelp::Input::Keyboard::is(kelp::Input::Keyboard::KeyboardKey::KEY_MINUS, kelp::Input::Keyboard::KeyboardAction::PRESSED))
+    {
+        m_transform->m_scale = m_transform->m_scale - kep::Vector3(1.0f, 1.0f, 1.0f);
+        printf("scale: x%d \n", (int)m_transform->m_scale.x);
+    }
+    if(kelp::Input::Keyboard::is(kelp::Input::Keyboard::KeyboardKey::KEY_EQUAL, kelp::Input::Keyboard::KeyboardAction::PRESSED))
+    {
+        m_transform->m_scale = m_transform->m_scale + kep::Vector3(1.0f, 1.0f, 1.0f);
+        printf("scale: x%d \n", (int)m_transform->m_scale.x);
+    }
     
 /*    rline[0]->m_p0 = m_tTriangles[0].p[0];
     rline[0]->m_p1 = m_tTriangles[0].p[1];

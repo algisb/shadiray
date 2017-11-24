@@ -84,22 +84,22 @@ void RenderLine::render()
     
 }
 
-std::vector<kep::Vector3> RenderLineUI::m_verticies = std::vector<kep::Vector3>();
-std::vector<kep::Vector3> RenderLineUI::m_colours = std::vector<kep::Vector3>();
+std::vector<kep::Vector3> RenderLine2::m_verticies = std::vector<kep::Vector3>();
+std::vector<kep::Vector3> RenderLine2::m_colours = std::vector<kep::Vector3>();
 
-RenderLineUI::RenderLineUI(kep::Vector3 _p0, kep::Vector3 _p1, kep::Vector3 _colour)
+RenderLine2::RenderLine2(kep::Vector3 _p0, kep::Vector3 _p1, kep::Vector3 _colour)
 {
     m_p0 = _p0;
     m_p1 = _p1;
     m_enabled = true;
     m_colour = _colour;
 }
-RenderLineUI::~RenderLineUI()
+RenderLine2::~RenderLine2()
 {
     
 }
 
-void RenderLineUI::renderLines(Shader * _shader, Camera * _rc)
+void RenderLine2::renderLines(Shader * _shader, Camera * _rc)
 {
 //     struct VecCol
 //     {
@@ -150,11 +150,11 @@ void RenderLineUI::renderLines(Shader * _shader, Camera * _rc)
     m_colours.clear();
 }
 
-void RenderLineUI::init()
+void RenderLine2::init()
 {
     
 }
-void RenderLineUI::update()
+void RenderLine2::update()
 {
     if(m_enabled)
     {
@@ -163,7 +163,7 @@ void RenderLineUI::update()
         m_colours.push_back(m_colour);
     }
 }
-void RenderLineUI::render()
+void RenderLine2::render()
 {
     
 }

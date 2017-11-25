@@ -167,6 +167,7 @@ void RayCaster::updateRays(int (*_testFunc)(Ray *, Triangle *,  kep::Vector3 * )
     for(int j = 0; j<RayReciever::s_rayRecievers.size(); j++)
         RayReciever::s_rayRecievers[j]->updateR();//updates triangles using their model matrix
     
+    Contact::clearMarkers();
     //different casting approaches
     switch(_type)
     {

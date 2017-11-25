@@ -22,6 +22,7 @@ namespace shad
         static void writeToLogFile(Contacts & _contacts);
         static void printToConsole(Contacts & _contacts);
         static void markContacts(Contacts & _contacts, kelp::Entity * _owner);
+        static void clearMarkers();
     };
     
     class Marker : public kelp::Component

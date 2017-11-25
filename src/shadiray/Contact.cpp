@@ -72,11 +72,7 @@ void Contact::printToConsole(Contacts & _contacts)
 
 void Contact::markContacts(shad::Contacts& _contacts, kelp::Entity * _owner)
 {
-    for(uint64_t i = 0; i<Marker::s_markers.size(); i++)//disable markers incase we have more then required
-    {
-        Marker::s_markers[i]->m_line[0]->m_enabled = false;
-        Marker::s_markers[i]->m_line[1]->m_enabled = false;
-    }
+
     for(uint64_t i = 0; i<_contacts.size(); i++)
     {
         uint64_t reqSize = i+1;
@@ -91,9 +87,19 @@ void Contact::markContacts(shad::Contacts& _contacts, kelp::Entity * _owner)
             Marker::s_markers[i]->m_point = _contacts[i]->m_contact;
             Marker::s_markers[i]->m_line[0]->m_enabled = true;
             Marker::s_markers[i]->m_line[1]->m_enabled = true;
+            Marker::s_markers[i]->m_line[2]->m_enabled = true;
         }
         
 
+    }
+}
+void Contact::clearMarkers()
+{
+    for(uint64_t i = 0; i<Marker::s_markers.size(); i++)//disable markers incase we have more then required
+    {
+        Marker::s_markers[i]->m_line[0]->m_enabled = false;
+        Marker::s_markers[i]->m_line[1]->m_enabled = false;
+        Marker::s_markers[i]->m_line[2]->m_enabled = false;
     }
 }
 

@@ -1,0 +1,113 @@
+==32283== Memcheck, a memory error detector
+==32283== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==32283== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
+==32283== Command: ./shadiray-demo
+==32283== 
+==32283== Conditional jump or move depends on uninitialised value(s)
+==32283==    at 0x8AE40A4: ??? (in /usr/lib/nvidia/libnvidia-glcore.so.340.102)
+==32283==    by 0x8A8A435: ??? (in /usr/lib/nvidia/libnvidia-glcore.so.340.102)
+==32283==    by 0x8A8CC7D: ??? (in /usr/lib/nvidia/libnvidia-glcore.so.340.102)
+==32283==    by 0x8C1E185: ??? (in /usr/lib/nvidia/libnvidia-glcore.so.340.102)
+==32283==    by 0x8C21AC1: ??? (in /usr/lib/nvidia/libnvidia-glcore.so.340.102)
+==32283==    by 0x8AC41F4: ??? (in /usr/lib/nvidia/libnvidia-glcore.so.340.102)
+==32283==    by 0x8AC4571: ??? (in /usr/lib/nvidia/libnvidia-glcore.so.340.102)
+==32283==    by 0x8AC4607: ??? (in /usr/lib/nvidia/libnvidia-glcore.so.340.102)
+==32283==    by 0x8C1E7A5: ??? (in /usr/lib/nvidia/libnvidia-glcore.so.340.102)
+==32283==    by 0x8C2B1E3: ??? (in /usr/lib/nvidia/libnvidia-glcore.so.340.102)
+==32283==    by 0x87CF875: ??? (in /usr/lib/nvidia/libnvidia-glcore.so.340.102)
+==32283==    by 0x87CFBF7: ??? (in /usr/lib/nvidia/libnvidia-glcore.so.340.102)
+==32283== 
+==32283== Conditional jump or move depends on uninitialised value(s)
+==32283==    at 0x8AE40A4: ??? (in /usr/lib/nvidia/libnvidia-glcore.so.340.102)
+==32283==    by 0x8A8A435: ??? (in /usr/lib/nvidia/libnvidia-glcore.so.340.102)
+==32283==    by 0x8A8C9DF: ??? (in /usr/lib/nvidia/libnvidia-glcore.so.340.102)
+==32283==    by 0x8C3E015: ??? (in /usr/lib/nvidia/libnvidia-glcore.so.340.102)
+==32283==    by 0x8C3F74E: ??? (in /usr/lib/nvidia/libnvidia-glcore.so.340.102)
+==32283==    by 0x8AC41F4: ??? (in /usr/lib/nvidia/libnvidia-glcore.so.340.102)
+==32283==    by 0x8AC4571: ??? (in /usr/lib/nvidia/libnvidia-glcore.so.340.102)
+==32283==    by 0x8AC4607: ??? (in /usr/lib/nvidia/libnvidia-glcore.so.340.102)
+==32283==    by 0x8C3E7C0: ??? (in /usr/lib/nvidia/libnvidia-glcore.so.340.102)
+==32283==    by 0x8C2C0A8: ??? (in /usr/lib/nvidia/libnvidia-glcore.so.340.102)
+==32283==    by 0x87CFE42: ??? (in /usr/lib/nvidia/libnvidia-glcore.so.340.102)
+==32283==    by 0x8C30DF2: ??? (in /usr/lib/nvidia/libnvidia-glcore.so.340.102)
+==32283== 
+==32283== Conditional jump or move depends on uninitialised value(s)
+==32283==    at 0x8AE40A4: ??? (in /usr/lib/nvidia/libnvidia-glcore.so.340.102)
+==32283==    by 0x8A8A435: ??? (in /usr/lib/nvidia/libnvidia-glcore.so.340.102)
+==32283==    by 0x8A8ACEC: ??? (in /usr/lib/nvidia/libnvidia-glcore.so.340.102)
+==32283==    by 0x8C663A7: ??? (in /usr/lib/nvidia/libnvidia-glcore.so.340.102)
+==32283==    by 0x8C67B5E: ??? (in /usr/lib/nvidia/libnvidia-glcore.so.340.102)
+==32283==    by 0x8AC41F4: ??? (in /usr/lib/nvidia/libnvidia-glcore.so.340.102)
+==32283==    by 0x8AC4571: ??? (in /usr/lib/nvidia/libnvidia-glcore.so.340.102)
+==32283==    by 0x8AC4607: ??? (in /usr/lib/nvidia/libnvidia-glcore.so.340.102)
+==32283==    by 0x8C66725: ??? (in /usr/lib/nvidia/libnvidia-glcore.so.340.102)
+==32283==    by 0x8C30E92: ??? (in /usr/lib/nvidia/libnvidia-glcore.so.340.102)
+==32283==    by 0x8A81104: ??? (in /usr/lib/nvidia/libnvidia-glcore.so.340.102)
+==32283==    by 0x8A63EAB: ??? (in /usr/lib/nvidia/libnvidia-glcore.so.340.102)
+==32283== 
+==32283== Invalid read of size 4
+==32283==    at 0x1A6029: kelp::MeshLoad::MeshLoad(char const*, char const*) (Mesh.cpp:202)
+==32283==    by 0x199BDA: kelp::Core::Core(int, char**) (Core.cpp:24)
+==32283==    by 0x1C2CA2: main (main.cpp:61)
+==32283==  Address 0xad3dbd4 is 4 bytes after a block of size 32 alloc'd
+==32283==    at 0x4C2D52F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==32283==    by 0x1B49D7: __gnu_cxx::new_allocator<float>::allocate(unsigned long, void const*) (new_allocator.h:111)
+==32283==    by 0x1B2759: std::allocator_traits<std::allocator<float> >::allocate(std::allocator<float>&, unsigned long) (alloc_traits.h:436)
+==32283==    by 0x1AF3C5: std::_Vector_base<float, std::allocator<float> >::_M_allocate(unsigned long) (stl_vector.h:172)
+==32283==    by 0x1AA43B: void std::vector<float, std::allocator<float> >::_M_realloc_insert<float const&>(__gnu_cxx::__normal_iterator<float*, std::vector<float, std::allocator<float> > >, float const&) (vector.tcc:406)
+==32283==    by 0x1A7B11: std::vector<float, std::allocator<float> >::push_back(float const&) (stl_vector.h:948)
+==32283==    by 0x1A2D34: tinyobj::LoadObj(tinyobj::attrib_t*, std::vector<tinyobj::shape_t, std::allocator<tinyobj::shape_t> >*, std::vector<tinyobj::material_t, std::allocator<tinyobj::material_t> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::istream*, tinyobj::MaterialReader*, bool) (tiny_obj_loader.h:1605)
+==32283==    by 0x1A26EA: tinyobj::LoadObj(tinyobj::attrib_t*, std::vector<tinyobj::shape_t, std::allocator<tinyobj::shape_t> >*, std::vector<tinyobj::material_t, std::allocator<tinyobj::material_t> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, char const*, char const*, bool) (tiny_obj_loader.h:1522)
+==32283==    by 0x1A55CD: kelp::MeshLoad::MeshLoad(char const*, char const*) (Mesh.cpp:100)
+==32283==    by 0x199BDA: kelp::Core::Core(int, char**) (Core.cpp:24)
+==32283==    by 0x1C2CA2: main (main.cpp:61)
+==32283== 
+==32283== Invalid read of size 4
+==32283==    at 0x1A6029: kelp::MeshLoad::MeshLoad(char const*, char const*) (Mesh.cpp:202)
+==32283==    by 0x199C66: kelp::Core::Core(int, char**) (Core.cpp:28)
+==32283==    by 0x1C2CA2: main (main.cpp:61)
+==32283==  Address 0xb81a960 is 0 bytes after a block of size 256 alloc'd
+==32283==    at 0x4C2D52F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==32283==    by 0x1B49D7: __gnu_cxx::new_allocator<float>::allocate(unsigned long, void const*) (new_allocator.h:111)
+==32283==    by 0x1B2759: std::allocator_traits<std::allocator<float> >::allocate(std::allocator<float>&, unsigned long) (alloc_traits.h:436)
+==32283==    by 0x1AF3C5: std::_Vector_base<float, std::allocator<float> >::_M_allocate(unsigned long) (stl_vector.h:172)
+==32283==    by 0x1AA43B: void std::vector<float, std::allocator<float> >::_M_realloc_insert<float const&>(__gnu_cxx::__normal_iterator<float*, std::vector<float, std::allocator<float> > >, float const&) (vector.tcc:406)
+==32283==    by 0x1A7B11: std::vector<float, std::allocator<float> >::push_back(float const&) (stl_vector.h:948)
+==32283==    by 0x1A2D34: tinyobj::LoadObj(tinyobj::attrib_t*, std::vector<tinyobj::shape_t, std::allocator<tinyobj::shape_t> >*, std::vector<tinyobj::material_t, std::allocator<tinyobj::material_t> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::istream*, tinyobj::MaterialReader*, bool) (tiny_obj_loader.h:1605)
+==32283==    by 0x1A26EA: tinyobj::LoadObj(tinyobj::attrib_t*, std::vector<tinyobj::shape_t, std::allocator<tinyobj::shape_t> >*, std::vector<tinyobj::material_t, std::allocator<tinyobj::material_t> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, char const*, char const*, bool) (tiny_obj_loader.h:1522)
+==32283==    by 0x1A55CD: kelp::MeshLoad::MeshLoad(char const*, char const*) (Mesh.cpp:100)
+==32283==    by 0x199C66: kelp::Core::Core(int, char**) (Core.cpp:28)
+==32283==    by 0x1C2CA2: main (main.cpp:61)
+==32283== 
+VENDOR = NVIDIA Corporation
+RENDERER = GeForce GTX 860M/PCIe/SSE2
+VERSION = 3.3.0 NVIDIA 340.102
+added:
+added:
+added:
+reused: 
+vertex locs: 
+    181669264
+reused: 
+vertex locs: 
+    181669648
+added:
+v num: 4 
+t num: 2 
+e num; 5 
+==32283== 
+==32283== HEAP SUMMARY:
+==32283==     in use at exit: 27,455 bytes in 391 blocks
+==32283==   total heap usage: 169,196 allocs, 168,805 frees, 179,909,708 bytes allocated
+==32283== 
+==32283== LEAK SUMMARY:
+==32283==    definitely lost: 0 bytes in 0 blocks
+==32283==    indirectly lost: 0 bytes in 0 blocks
+==32283==      possibly lost: 0 bytes in 0 blocks
+==32283==    still reachable: 27,455 bytes in 391 blocks
+==32283==         suppressed: 0 bytes in 0 blocks
+==32283== Rerun with --leak-check=full to see details of leaked memory
+==32283== 
+==32283== For counts of detected and suppressed errors, rerun with: -v
+==32283== Use --track-origins=yes to see where uninitialised values come from
+==32283== ERROR SUMMARY: 16 errors from 5 contexts (suppressed: 0 from 0)

@@ -17,6 +17,12 @@ RayCaster::RayCaster(int _width, int _height, float _nearPlane, float _farPlane,
 }
 RayCaster::~RayCaster()
 {
+    for(int j = 0; j<m_width*m_height; j++)
+    {
+        delete m_rays[j];
+    }
+    delete[] m_rays;
+    delete[] m_rLines;
 }
 
 void RayCaster::init()
@@ -166,7 +172,6 @@ void RayCaster::updateRays(int (*_testFunc)(Ray *, Triangle *,  kep::Vector3 * )
 {
     for(int j = 0; j<RayReciever::s_rayRecievers.size(); j++)
         RayReciever::s_rayRecievers[j]->updateR();//updates triangles using their model matrix
-    
     Contact::clearMarkers();
     //different casting approaches
     switch(_type)
@@ -187,7 +192,6 @@ void RayCaster::updateRays(int (*_testFunc)(Ray *, Triangle *,  kep::Vector3 * )
             TEST_FACILITY(raycastBox(_testFunc));
             break;
     }
-    
 }
 
 void RayCaster::raycastCone(int (*_testFunc)(Ray *, Triangle *,  kep::Vector3 * ))
@@ -221,7 +225,6 @@ void RayCaster::raycastCone(int (*_testFunc)(Ray *, Triangle *,  kep::Vector3 * 
     for(uint64_t i = 0; i<contacts.size(); i++)
         delete contacts[i];
     contacts.clear();
-    
 }
 
 
@@ -299,17 +302,14 @@ void RayCaster::raycastBox(int (*_testFunc)(Ray *, Triangle *,  kep::Vector3 * )
 }
 void RayCaster::initBoxVolume()
 {
-
     m_box[0] = kep::Vector3(0.0f, 0.0f, 0.0f);
     m_box[1] = kep::Vector3(0.0f, m_width, 0.0f);
     m_box[2] = kep::Vector3(0.0f, m_width, m_height);
     m_box[3] = kep::Vector3(0.0f, 0.0f, m_height);
-    
     m_box[4] = kep::Vector3(255, 0.0f, 0.0f);
     m_box[5] = kep::Vector3(255, m_width, 0.0f);
     m_box[6] = kep::Vector3(255, m_width, m_height);
     m_box[7] = kep::Vector3(255, 0.0f, m_height);
-    
     int l = 0;
     for(int i = 0; i<4; i++)
     {

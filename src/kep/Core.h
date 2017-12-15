@@ -38,6 +38,7 @@ namespace kep
         void operator -=(const Vector3 & _v);
         
         Vector3 operator -(const Vector3 & _v);
+        bool operator ==(const Vector3 & _v);
         
         void invert();
         

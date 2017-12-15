@@ -1,0 +1,6 @@
+use this to specify compiler:
+cmake -D CMAKE_C_COMPILER=clang -D CMAKE_CXX_COMPILER=clang++ ..
+
+clang needs stdlib compiler flags set manually set:
+ (CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
+

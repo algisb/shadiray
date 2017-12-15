@@ -32,6 +32,13 @@ Vector3 Vector3::operator -(const Vector3 & _v)
 {
     return Vector3(x - _v.x, y - _v.y, z - _v.z);
 }
+bool Vector3::operator==(const kep::Vector3& _v)
+{
+    if(data[0] == _v.data[0] && data[1] == _v.data[1] && data[2] == _v.data[2])
+        return true;
+    else
+        return false;
+}
 
 
 void Vector3::invert()

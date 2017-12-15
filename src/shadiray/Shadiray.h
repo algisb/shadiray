@@ -64,12 +64,12 @@ namespace shad
         Plane plane(_triangle->p[0], _triangle->n);
         if(rayPlane(_ray, &plane, o_point) == 0)//17 flops
             return 0;
-        
         //edge 0
         kep::Vector3 ab = _triangle->p[1] - _triangle->p[0];//3 flops
         kep::Vector3 aq = *o_point - _triangle->p[0];//3 flops
         kep::Vector3 c = kep::cross(ab,aq);//9 flops
         float d = kep::dot(c, _triangle->n);//5 flops
+        
         if(d < 0)
             return 0;
         //edge 1
@@ -88,6 +88,23 @@ namespace shad
             return 0;    
         
         return 1;
+        
+        //         kep::Vector3 ab, aq, c;
+//         float d;
+//         
+//         for(int i = 0; i<3; ++i)
+//         {
+//             int i0 = i+1;
+//             if(i0 > 2)
+//                 i0 = 0;
+//             ab = _triangle->p[i0] - _triangle->p[i];//3 flops
+//             aq = *o_point - _triangle->p[i];//3 flops
+//             c = kep::cross(ab,aq);//9 flops
+//             d = kep::dot(c, _triangle->n);//5 flops
+//             if(d < 0)
+//                 return 0;
+//             
+//         }
     }
     
     inline int rayTriangleBary(Ray * _ray, Triangle * _triangle,  kep::Vector3 * o_point)// total 63 flops

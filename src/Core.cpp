@@ -22,10 +22,11 @@ Core::Core(int _argc, char ** _argv)
     
     
     m_plane = new MeshLoad("./models/plane.obj", "./models/");
+    m_planeSubdiv = new Subdiv(m_plane->m_dataV, m_plane->m_numVertices);
+    
     m_sphereMesh = new MeshLoad("./models/sphereUV.obj", "./models/");
     m_cubeMesh = new MeshLoad("./models/cube.obj", "./models/");
     m_highPolyMesh = new MeshLoad("./models/peps.obj", "./models/");
-    m_sphereSmoothMesh = new MeshLoad("./models/sphereUVsmooth.obj", "./models/");
     m_monkeyMesh = new MeshLoad("./models/monkey.obj", "./models/");
     if(_argc > 1)
         m_externalMesh = new MeshLoad(_argv[1], "./models/");
@@ -40,8 +41,13 @@ Core::Core(int _argc, char ** _argv)
 Core::~Core()
 {
     delete m_plane;
+    delete m_planeSubdiv;
     delete m_sphereMesh;
     delete m_cubeMesh;
+    delete m_highPolyMesh;
+    delete m_monkeyMesh;
+    if(m_externalMesh != NULL)
+        delete m_externalMesh;
     
     delete m_shaderMinimal;
     delete m_shaderDefault;

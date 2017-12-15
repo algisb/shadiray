@@ -32,6 +32,7 @@
 #include "component/Transform.h"
 #include "kep/Core.h"
 #include "world/World_0.h"
+#include "Subdiv.h"
 
 //Fore initialising worlds
 namespace kelp
@@ -41,10 +42,10 @@ namespace kelp
     public:
  //       MeshLoad * m_cityMesh;
         MeshLoad * m_plane;
+        Subdiv * m_planeSubdiv;
         MeshLoad * m_sphereMesh;
         MeshLoad * m_cubeMesh;
         MeshLoad * m_highPolyMesh;
-        MeshLoad * m_sphereSmoothMesh;
         MeshLoad * m_monkeyMesh;
         
         MeshLoad * m_externalMesh;

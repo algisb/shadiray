@@ -12,9 +12,6 @@ namespace kelp
     class Mesh
     {
     public:
-        
-
-
         GLuint m_vao;
         GLuint m_vboV;//vertex data
         GLuint m_vboN;//normal data
@@ -46,8 +43,6 @@ namespace kelp
         MeshLoad(const char * _objPath, const char * _mtlDir);
         ~MeshLoad();
     };
-    
-    
 };
 
 

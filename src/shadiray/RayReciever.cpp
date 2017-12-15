@@ -38,12 +38,6 @@ void RayReciever::init()
                             kep::Vector3( dataN[i+0], dataN[i+1], dataN[i+2])
                                       );
     }
-    
-//     for(int i = 0; i<3; i++)
-//     {
-//         rline[i] = new kelp::RenderLine(kep::Vector3(), kep::Vector3());
-//         m_owner->addComponent(rline[i]);
-//     }
 }
 
 void RayReciever::update()
@@ -58,15 +52,6 @@ void RayReciever::update()
         m_transform->m_scale = m_transform->m_scale + kep::Vector3(1.0f, 1.0f, 1.0f);
         printf("scale: x%d \n", (int)m_transform->m_scale.x);
     }
-    
-/*    rline[0]->m_p0 = m_tTriangles[0].p[0];
-    rline[0]->m_p1 = m_tTriangles[0].p[1];
-
-    rline[1]->m_p0 = m_tTriangles[0].p[0];
-    rline[1]->m_p1 = m_tTriangles[0].p[2];
-
-    rline[2]->m_p0 = m_tTriangles[0].p[1];
-    rline[2]->m_p1 = m_tTriangles[0].p[2]; */ 
 }
 
 void RayReciever::render()

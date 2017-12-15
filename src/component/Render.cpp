@@ -35,8 +35,9 @@ void Render::render()
     
     glUseProgram(m_shader->m_shaderLocation);
 
+    kep::Matrix4 modMatOGL = m_transform->m_modelMat.transpose();
     glUniformMatrix4fv(m_shader->m_shaderModelMatLocation, 1, 
-                       GL_FALSE, &(m_transform->m_modelMat.transpose().d[0][0]));
+                       GL_FALSE, &modMatOGL.d[0][0]);
     
     Camera * rc = m_owner->m_world->m_renderCamera;
     glUniformMatrix4fv(m_shader->m_shaderViewMatLocation, 1, 

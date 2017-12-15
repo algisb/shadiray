@@ -13,8 +13,6 @@ namespace shad
     class RayReciever : public kelp::Component //any set of trinagles appearing in the ray cast scene
     {
     public:
-        //kelp::RenderLine * rline[3];
-        
         static std::vector<RayReciever*> s_rayRecievers;
         kelp::Mesh * m_mesh;
         kelp::Transform * m_transform;

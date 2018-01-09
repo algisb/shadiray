@@ -202,7 +202,7 @@ MeshLoad::MeshLoad(const char * _objPath, const char * _mtlDir)
         UNPACK_OBJ(
                     for(size_t i = 0; i<2; i++)
                     {
-                        dataT[dataT_i] = attrib.texcoords[3*idx.texcoord_index+i];
+                        dataT[dataT_i] = attrib.texcoords[2*idx.texcoord_index+i]; //NOTE: subscript out of range error used to occur here
                         dataT_i++;
                     }
                   );

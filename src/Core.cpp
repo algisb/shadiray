@@ -21,7 +21,7 @@ Core::Core(int _argc, char ** _argv)
     
     
     
-    m_plane = new MeshLoad("./models/plane.obj", "./models/");
+     m_plane = new MeshLoad("./models/plane.obj", "./models/");
     m_planeSubdiv = new Subdiv(m_plane->m_dataV, m_plane->m_numVertices);
     
     m_sphereMesh = new MeshLoad("./models/sphereUV.obj", "./models/");
